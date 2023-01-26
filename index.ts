@@ -4,4 +4,4 @@ export { MouseConstraint } from "./src/core/Mouse";
 export { Circle } from "./src/shapes/Circle";
 export { Rectangle } from "./src/shapes/Rectangle";
 export { Render } from "./src/core/Render";
-export { useStore } from "./src/core/store";
+export { useContainerSize } from "./src/utils/useContainerSize";

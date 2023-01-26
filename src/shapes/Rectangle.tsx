@@ -11,6 +11,7 @@ interface Props {
     y: number;
   };
   children?: React.ReactNode;
+  rounded?: number;
   bodyOptions?: IBodyDefinition;
   visible?: boolean;
   style?: React.CSSProperties;
@@ -21,12 +22,12 @@ export const Rectangle = ({
   className = "",
   style,
   initialPosition,
+  rounded = 0,
   children,
   bodyOptions,
 }: Props) => {
   const divRef = useRef<HTMLDivElement>(null!);
   const [width, height] = useSize(divRef);
-  console.log(width);
   const [elements] = useStore((state) => state.elements);
   const [engine] = useStore((state) => state.engine);
 
@@ -34,7 +35,12 @@ export const Rectangle = ({
     createRectangle({
       width,
       height,
-      options: bodyOptions,
+      options: {
+        ...bodyOptions,
+        chamfer: {
+          radius: rounded,
+        },
+      },
       position: {
         x: initialPosition.x,
         y: initialPosition.y,
@@ -46,15 +52,18 @@ export const Rectangle = ({
     const newRectangle = createRectangle({
       width,
       height,
-      options: bodyOptions,
+      options: {
+        ...bodyOptions,
+        chamfer: {
+          radius: rounded,
+        },
+      },
       position: {
         x: rectangle.current.body.position.x,
         y: rectangle.current.body.position.y,
       },
       ref: visible ? divRef : undefined,
     });
-    console.log(newRectangle.body.position.x);
-
     removeElement({ element: rectangle.current, elements, engine });
     rectangle.current = newRectangle;
     addElement({ element: newRectangle, elements, engine });
@@ -73,6 +82,7 @@ export const Rectangle = ({
         position: "absolute",
         top: 0,
         left: 0,
+        borderRadius: rounded,
         ...style,
       }}
       className={className}
