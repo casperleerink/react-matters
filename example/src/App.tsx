@@ -27,47 +27,51 @@ const rectangles = new Array(10).fill(null).map((_, idx) => {
 
 function App() {
   return (
-    <MatterContainer
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "relative",
-        background: "lightgray",
-        overflow: "hidden",
-      }}
-      engineOptions={{
-        gravity: {
-          x: 0,
-          y: 2.2,
-        },
-      }}
-    >
-      <Bounds />
-      <MouseConstraint />
-      {circles.map((circle) => (
-        <Circle
-          key={circle.id}
-          className="circle-1"
-          initialPosition={{
-            x: circle.x,
-            y: circle.y,
-          }}
-        />
-      ))}
-      {rectangles.map((rectangle) => (
-        <Rectangle
-          key={rectangle.id}
-          initialPosition={{
-            x: rectangle.x,
-            y: rectangle.y,
-          }}
-          className="rectangle-1"
-          rounded={rectangle.rounded}
-        />
-      ))}
-      <Text />
-      <Render />
-    </MatterContainer>
+    <div className="w-full">
+      <MatterContainer
+        className="w-full h-screen relative bg-white overflow-hidden"
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "relative",
+          background: "lightgray",
+          overflow: "hidden",
+        }}
+        engineOptions={{
+          gravity: {
+            x: 0,
+            y: 2.2,
+          },
+        }}
+      >
+        <Bounds />
+        <MouseConstraint />
+        {circles.map((circle) => (
+          <Circle
+            key={circle.id}
+            className="w-16 h-16 bg-slate-800"
+            initialPosition={{
+              x: circle.x,
+              y: circle.y,
+            }}
+          />
+        ))}
+        {rectangles.map((rectangle) => (
+          <Rectangle
+            key={rectangle.id}
+            initialPosition={{
+              x: rectangle.x,
+              y: rectangle.y,
+            }}
+            className="w-16 h-20 bg-slate-600"
+            rounded={rectangle.rounded}
+          />
+        ))}
+        <Text />
+        <Render />
+      </MatterContainer>
+      <div className="w-full h-screen bg-slate-400"></div>
+    </div>
   );
 }
 

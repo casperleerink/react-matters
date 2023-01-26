@@ -10,8 +10,6 @@ export const useDrag = ({ drag, dragStart, dragEnd }: Props) => {
   const current = useRef({ x: 0, y: 0 });
   const dragging = useRef(false);
   const onDragStart = (ev: React.DragEvent<HTMLElement>) => {
-    console.log("drag");
-
     current.current.x = ev.clientX;
     current.current.y = ev.clientY;
     dragStart && dragStart();

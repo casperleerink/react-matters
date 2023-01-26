@@ -16,7 +16,7 @@ export const Render = () => {
 
     if (engine) {
       // update matter-js engine
-      Engine.update(engine, delta < 200 ? delta : 200);
+      Engine.update(engine, delta < 100 ? delta : 100);
 
       //update HTML DOM positions
       elements.forEach((element) => {

@@ -12,6 +12,8 @@ export const MouseConstraint = () => {
   useEffect(() => {
     if (!container || !engine) return;
     const mouse = Mouse.create(container);
+    // @ts-expect-error mousewheel not specified in matterjs types;
+    mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
     const mouseConstraint = MouseConstraintMatter.create(engine, {
       mouse,
     });

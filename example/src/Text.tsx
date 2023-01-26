@@ -5,18 +5,18 @@ interface Props {
 }
 
 const Text: React.FC<Props> = ({ className = "" }) => {
-  const size = useContainerSize();
-  if (!size) return null;
+  const [width, height] = useContainerSize();
+  if (!width || !height) return null;
   return (
     <Rectangle
-      initialPosition={{ x: size[0] * 0.5, y: size[1] * 0.1 }}
+      initialPosition={{ x: width * 0.5, y: height * 0.1 }}
       rounded={4}
       bodyOptions={{
         friction: 0.5,
       }}
-      className="text-1"
+      className="text-gray-900 px-4 hover:px-12 py-1 border border-gray-50"
     >
-      <p className="">Hello world!</p>
+      <p className="text-gray-900">Hello world!</p>
     </Rectangle>
   );
 };

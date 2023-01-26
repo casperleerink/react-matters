@@ -22,7 +22,6 @@ export const Container = ({
 
   const [engine, setStore] = useStore((state) => state.engine);
   useSize(containerRef, (size) => {
-    console.log(size);
     setStore({
       container: {
         x: size.width,

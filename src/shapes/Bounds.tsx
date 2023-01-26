@@ -51,7 +51,6 @@ export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
   return (
     <>
       {rects.map((rect) => {
-        // console.log(`id: ${rect.id}`, rect.x, rect.y, rect.width, rect.height);
         return (
           <Rectangle
             key={rect.id}
@@ -68,6 +67,7 @@ export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
               width: `${rect.width}px`,
               height: `${rect.height}px`,
             }}
+            visible={false}
           />
         );
       })}

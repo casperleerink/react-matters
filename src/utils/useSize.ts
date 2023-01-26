@@ -1,5 +1,4 @@
-import { MutableRefObject, useCallback, useState } from "react";
-import useEventListener from "./useEventListerer";
+import { MutableRefObject, useCallback, useRef, useState } from "react";
 
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
@@ -27,10 +26,15 @@ export function useSize(
     }
   }, [setWidth, setHeight]);
 
-  useEventListener("resize", updateSize);
-
+  const resizeObserver = useRef(new ResizeObserver(updateSize));
   useIsomorphicLayoutEffect(() => {
     updateSize();
+    resizeObserver.current.observe(ref.current!, {
+      box: "border-box",
+    });
+    return () => {
+      resizeObserver.current.unobserve(ref.current!);
+    };
   }, []);
 
   return [width, height] as const;

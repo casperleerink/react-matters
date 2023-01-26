@@ -69,8 +69,6 @@ export const Rectangle = ({
     addElement({ element: newRectangle, elements, engine });
   }, [width, height, bodyOptions, initialPosition.x, initialPosition.y]);
 
-  if (!visible) return null;
-
   return (
     <div
       ref={divRef}
@@ -80,6 +78,7 @@ export const Rectangle = ({
         }px) rotate(0deg)`,
         transformOrigin: "center",
         position: "absolute",
+        opacity: visible ? 1 : 0,
         top: 0,
         left: 0,
         borderRadius: rounded,
