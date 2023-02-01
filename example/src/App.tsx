@@ -6,6 +6,8 @@ import {
   MouseConstraint,
   Render,
 } from "../../index";
+import CircleExample from "./CircleExample";
+import RectExample from "./RectExample";
 import Text from "./Text";
 
 const circles = new Array(20).fill(null).map((_, idx) => {
@@ -46,6 +48,8 @@ function App() {
       >
         <Bounds />
         {/* <MouseConstraint /> */}
+        <CircleExample />
+        <RectExample />
         {circles.map((circle) => (
           <Circle
             key={circle.id}
