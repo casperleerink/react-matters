@@ -45,7 +45,7 @@ function App() {
         }}
       >
         <Bounds />
-        <MouseConstraint />
+        {/* <MouseConstraint /> */}
         {circles.map((circle) => (
           <Circle
             key={circle.id}
@@ -54,6 +54,7 @@ function App() {
               x: circle.x,
               y: circle.y,
             }}
+            draggable
           />
         ))}
         {rectangles.map((rectangle) => (
@@ -65,6 +66,7 @@ function App() {
             }}
             className="w-16 h-20 bg-slate-600"
             rounded={rectangle.rounded}
+            draggable
           />
         ))}
         <Text />

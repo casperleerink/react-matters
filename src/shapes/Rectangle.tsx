@@ -4,6 +4,7 @@ import { type Element, useStore } from "../core/store";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
 import { addElement, createRectangle, removeElement } from "../utils/element";
+import { useDrag } from "../utils/useDrag";
 interface Props {
   className?: string;
   initialPosition: {
@@ -15,6 +16,7 @@ interface Props {
   bodyOptions?: IBodyDefinition;
   visible?: boolean;
   style?: React.CSSProperties;
+  draggable?: boolean;
 }
 
 export const Rectangle = ({
@@ -25,6 +27,7 @@ export const Rectangle = ({
   rounded = 0,
   children,
   bodyOptions,
+  draggable,
 }: Props) => {
   const divRef = useRef<HTMLDivElement>(null!);
   const [width, height] = useSize(divRef);
@@ -69,6 +72,10 @@ export const Rectangle = ({
     addElement({ element: newRectangle, elements, engine });
   }, [width, height, bodyOptions, initialPosition.x, initialPosition.y]);
 
+  const bind = useDrag({
+    body: rectangle.current.body,
+    enabled: draggable ?? false,
+  });
   return (
     <div
       ref={divRef}
@@ -82,9 +89,11 @@ export const Rectangle = ({
         top: 0,
         left: 0,
         borderRadius: rounded,
+        touchAction: "none",
         ...style,
       }}
       className={className}
+      {...bind()}
     >
       {children}
     </div>

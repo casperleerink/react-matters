@@ -1,7 +1,7 @@
 {
   "name": "react-matters",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": "casperleerink",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -23,5 +23,8 @@
     "matter-js": "^0.18.0",
     "react": "^16.8 || ^17 || ^18",
     "react-dom": "^16.8 || ^17 || ^18"
+  },
+  "dependencies": {
+    "@use-gesture/react": "^10.2.24"
   }
 }

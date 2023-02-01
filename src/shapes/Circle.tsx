@@ -4,6 +4,7 @@ import { type Element, useStore } from "../core/store";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
 import { addElement, createCircle, removeElement } from "../utils/element";
+import { useDrag } from "../utils/useDrag";
 interface Props {
   className?: string;
   style?: React.CSSProperties;
@@ -13,6 +14,7 @@ interface Props {
   };
   children?: React.ReactNode;
   bodyOptions?: IBodyDefinition;
+  draggable?: boolean;
 }
 
 export const Circle = ({
@@ -21,6 +23,7 @@ export const Circle = ({
   initialPosition,
   children,
   bodyOptions,
+  draggable,
 }: Props) => {
   const divRef = useRef<HTMLDivElement>(null!);
   const [width, height] = useSize(divRef);
@@ -54,6 +57,11 @@ export const Circle = ({
     addElement({ element: newCircle, elements, engine });
   }, [width, height, bodyOptions]);
 
+  const bind = useDrag({
+    body: circle.current.body,
+    enabled: draggable ?? false,
+  });
+
   return (
     <div
       ref={divRef}
@@ -67,9 +75,11 @@ export const Circle = ({
         left: 0,
         aspectRatio: "1/1",
         borderRadius: "9999px",
+        touchAction: "none",
         ...style,
       }}
       className={className}
+      {...bind()}
     >
       {children}
     </div>

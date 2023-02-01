@@ -14,9 +14,16 @@ export const MouseConstraint = () => {
     const mouse = Mouse.create(container);
     // @ts-expect-error mousewheel not specified in matterjs types;
     mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+    // @ts-expect-error mousemove not specified in matterjs types;
+    mouse.element.removeEventListener("touchmove", mouse.mousemove);
+    // @ts-expect-error mousemove not specified in matterjs types;
+    mouse.element.removeEventListener("touchstart", mouse.mousedown);
+    // @ts-expect-error mousemove not specified in matterjs types;
+    mouse.element.removeEventListener("touchend", mouse.mouseup);
     const mouseConstraint = MouseConstraintMatter.create(engine, {
       mouse,
     });
+
     Composite.add(engine.world, mouseConstraint);
 
     return () => {

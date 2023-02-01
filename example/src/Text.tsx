@@ -16,7 +16,14 @@ const Text: React.FC<Props> = ({ className = "" }) => {
       }}
       className="text-gray-900 px-4 hover:px-12 py-1 border border-gray-50"
     >
-      <p className="text-gray-900">Hello world!</p>
+      <p
+        onClick={() => {
+          console.log("Hello world!");
+        }}
+        className="text-gray-900"
+      >
+        Hello world!
+      </p>
     </Rectangle>
   );
 };
