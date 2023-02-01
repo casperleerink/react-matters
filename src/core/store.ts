@@ -1,4 +1,4 @@
-import Matter, { Engine, type Body } from "matter-js";
+import Matter, { Engine, type Body, type Constraint } from "matter-js";
 import createFastContext from "./createFastContext";
 import { Vector2 } from "../types/vector";
 
@@ -11,6 +11,7 @@ export interface Element {
     position: Matter.Vector;
     angle: number;
   }) => void;
+  constraint?: Constraint;
 }
 
 export interface Store {

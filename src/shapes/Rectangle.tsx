@@ -3,8 +3,14 @@ import { Body, type IBodyDefinition } from "matter-js";
 import { type Element, useStore } from "../core/store";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
-import { addElement, createRectangle, removeElement } from "../utils/element";
+import {
+  addElement,
+  ConstraintType,
+  createRectangle,
+  removeElement,
+} from "../utils/element";
 import { useDrag } from "../utils/useDrag";
+import { useContainerSize } from "../utils/useContainerSize";
 interface Props {
   className?: string;
   initialPosition: {
@@ -17,6 +23,7 @@ interface Props {
   visible?: boolean;
   style?: React.CSSProperties;
   draggable?: boolean;
+  constraint?: ConstraintType;
 }
 
 export const Rectangle = ({
@@ -28,11 +35,14 @@ export const Rectangle = ({
   children,
   bodyOptions,
   draggable,
+  constraint,
 }: Props) => {
   const divRef = useRef<HTMLDivElement>(null!);
+  const lineRef = useRef<SVGLineElement | null>(null);
   const [width, height] = useSize(divRef);
   const [elements] = useStore((state) => state.elements);
   const [engine] = useStore((state) => state.engine);
+  const container = useContainerSize();
 
   const rectangle = useRef<Element>(
     createRectangle({
@@ -44,11 +54,13 @@ export const Rectangle = ({
           radius: rounded,
         },
       },
+      constraint,
       position: {
         x: initialPosition.x,
         y: initialPosition.y,
       },
       ref: visible ? divRef : undefined,
+      lineRef,
     })
   );
   useIsomorphicLayoutEffect(() => {
@@ -61,11 +73,13 @@ export const Rectangle = ({
           radius: rounded,
         },
       },
+      constraint,
       position: {
         x: rectangle.current.body.position.x,
         y: rectangle.current.body.position.y,
       },
       ref: visible ? divRef : undefined,
+      lineRef,
     });
     removeElement({ element: rectangle.current, elements, engine });
     rectangle.current = newRectangle;
@@ -77,25 +91,49 @@ export const Rectangle = ({
     enabled: draggable ?? false,
   });
   return (
-    <div
-      ref={divRef}
-      style={{
-        transform: `translate(${initialPosition.x - width * 0.5}px, ${
-          initialPosition.y - height * 0.5
-        }px) rotate(0deg)`,
-        transformOrigin: "center",
-        position: "absolute",
-        opacity: visible ? 1 : 0,
-        top: 0,
-        left: 0,
-        borderRadius: rounded,
-        touchAction: "none",
-        ...style,
-      }}
-      className={className}
-      {...bind()}
-    >
-      {children}
-    </div>
+    <>
+      <div
+        ref={divRef}
+        style={{
+          transform: `translate(${initialPosition.x - width * 0.5}px, ${
+            initialPosition.y - height * 0.5
+          }px) rotate(0deg)`,
+          transformOrigin: "center",
+          position: "absolute",
+          opacity: visible ? 1 : 0,
+          top: 0,
+          left: 0,
+          borderRadius: rounded,
+          touchAction: "none",
+          ...style,
+        }}
+        className={className}
+        {...bind()}
+      >
+        {children}
+      </div>
+      {constraint ? (
+        <svg
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            ...constraint.renderProps?.style,
+          }}
+          pointerEvents="none"
+          width={container[0] ?? 0}
+          height={container[1] ?? 0}
+        >
+          <line
+            ref={lineRef}
+            x1={constraint.point.x}
+            y1={constraint.point.y}
+            x2={rectangle.current.body.position.x}
+            y2={rectangle.current.body.position.y}
+            {...constraint.renderProps}
+          />
+        </svg>
+      ) : null}
+    </>
   );
 };

@@ -14,7 +14,7 @@ const Text: React.FC<Props> = ({ className = "" }) => {
       bodyOptions={{
         friction: 0.5,
       }}
-      className="text-gray-900 px-4 hover:px-12 py-1 border border-gray-50"
+      className="text-gray-900 px-4 py-1 border border-gray-50"
     >
       <p
         onClick={() => {
