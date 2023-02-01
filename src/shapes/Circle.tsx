@@ -78,26 +78,6 @@ export const Circle = ({
 
   return (
     <>
-      <div
-        ref={divRef}
-        style={{
-          transform: `translate(${initialPosition.x - width * 0.5}px, ${
-            initialPosition.y - height * 0.5
-          }px) rotate(0deg)`,
-          transformOrigin: "center",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          aspectRatio: "1/1",
-          borderRadius: "9999px",
-          touchAction: "none",
-          ...style,
-        }}
-        className={className}
-        {...bind()}
-      >
-        {children}
-      </div>
       {constraint ? (
         <svg
           style={{
@@ -120,6 +100,26 @@ export const Circle = ({
           />
         </svg>
       ) : null}
+      <div
+        ref={divRef}
+        style={{
+          transform: `translate(${initialPosition.x - width * 0.5}px, ${
+            initialPosition.y - height * 0.5
+          }px) rotate(0deg)`,
+          transformOrigin: "center",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          aspectRatio: "1/1",
+          borderRadius: "9999px",
+          touchAction: "none",
+          ...style,
+        }}
+        className={className}
+        {...bind()}
+      >
+        {children}
+      </div>
     </>
   );
 };

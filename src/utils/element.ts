@@ -77,8 +77,14 @@ export const createCircle = ({
         rotate(${angle}rad)`;
           if (lineRef?.current && constraint) {
             const line = lineRef.current;
-            line.setAttribute("x2", `${position.x}`);
-            line.setAttribute("y2", `${position.y}`);
+            line.setAttribute(
+              "x2",
+              `${position.x + (constraint.options?.pointB?.x ?? 0)}`
+            );
+            line.setAttribute(
+              "y2",
+              `${position.y + (constraint.options?.pointB?.y ?? 0)}`
+            );
           }
         }
       : undefined,
@@ -124,8 +130,14 @@ export const createRectangle = ({
         rotate(${angle}rad)`;
           if (lineRef?.current && constraint) {
             const line = lineRef.current;
-            line.setAttribute("x2", `${position.x}`);
-            line.setAttribute("y2", `${position.y}`);
+            line.setAttribute(
+              "x2",
+              `${position.x + (constraint.options?.pointB?.x ?? 0)}`
+            );
+            line.setAttribute(
+              "y2",
+              `${position.y + (constraint.options?.pointB?.y ?? 0)}`
+            );
           }
         }
       : undefined,

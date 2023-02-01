@@ -92,26 +92,6 @@ export const Rectangle = ({
   });
   return (
     <>
-      <div
-        ref={divRef}
-        style={{
-          transform: `translate(${initialPosition.x - width * 0.5}px, ${
-            initialPosition.y - height * 0.5
-          }px) rotate(0deg)`,
-          transformOrigin: "center",
-          position: "absolute",
-          opacity: visible ? 1 : 0,
-          top: 0,
-          left: 0,
-          borderRadius: rounded,
-          touchAction: "none",
-          ...style,
-        }}
-        className={className}
-        {...bind()}
-      >
-        {children}
-      </div>
       {constraint ? (
         <svg
           style={{
@@ -134,6 +114,26 @@ export const Rectangle = ({
           />
         </svg>
       ) : null}
+      <div
+        ref={divRef}
+        style={{
+          transform: `translate(${initialPosition.x - width * 0.5}px, ${
+            initialPosition.y - height * 0.5
+          }px) rotate(0deg)`,
+          transformOrigin: "center",
+          position: "absolute",
+          opacity: visible ? 1 : 0,
+          top: 0,
+          left: 0,
+          borderRadius: rounded,
+          touchAction: "none",
+          ...style,
+        }}
+        className={className}
+        {...bind()}
+      >
+        {children}
+      </div>
     </>
   );
 };
