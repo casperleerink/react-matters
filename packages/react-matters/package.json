@@ -8,7 +8,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup index.ts --format cjs,esm --dts",
-    "lint": "tsc"
+    "lint": "tsc",
+    "publish": "npm publish --access=public ./dist"
   },
   "devDependencies": {
     "@types/matter-js": "^0.18.2",
