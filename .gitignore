@@ -1,4 +1,13 @@
-
+.DS_Store
 node_modules
+.turbo
+*.log
+.next
 dist
-example/node_modules
+dist-ssr
+*.local
+.env
+.cache
+server/dist
+public/dist
+.turbo

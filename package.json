@@ -1,30 +1,20 @@
 {
-  "name": "react-matters",
-  "license": "MIT",
-  "version": "0.0.5",
-  "author": "casperleerink",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "private": true,
   "scripts": {
-    "build": "tsup index.ts --format cjs,esm --dts",
-    "lint": "tsc"
+    "build": "turbo run build",
+    "dev": "turbo run dev --no-cache --continue",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=docs^... && changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.0",
-    "@types/matter-js": "^0.18.2",
-    "@types/react": "^18.0.27",
-    "matter-js": "^0.18.0",
-    "react": "^18.2.0",
-    "tsup": "^6.5.0",
-    "typescript": "^4.9.4"
+    "@changesets/cli": "^2.22.0",
+    "eslint": "^7.32.0",
+    "prettier": "^2.5.1",
+    "turbo": "latest"
   },
-  "peerDependencies": {
-    "matter-js": "^0.18.0",
-    "react": "^16.8 || ^17 || ^18",
-    "react-dom": "^16.8 || ^17 || ^18"
-  },
-  "dependencies": {
-    "@use-gesture/react": "^10.2.24"
-  }
+  "packageManager": "pnpm@7.15.0"
 }

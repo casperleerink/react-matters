@@ -1,4 +1,7 @@
-import { Rectangle, useContainerSize } from "../../index";
+import {
+  Rectangle,
+  useContainerSize,
+} from "../../../packages/react-matters/index";
 
 interface Props {
   className?: string;

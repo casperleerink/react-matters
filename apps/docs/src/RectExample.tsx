@@ -1,4 +1,8 @@
-import { Circle, Rectangle, useContainerSize } from "../../index";
+import {
+  Circle,
+  Rectangle,
+  useContainerSize,
+} from "../../../packages/react-matters/index";
 
 interface Props {}
 

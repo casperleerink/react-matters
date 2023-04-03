@@ -1,0 +1,29 @@
+{
+  "name": "react-matters",
+  "license": "MIT",
+  "version": "0.0.6",
+  "author": "casperleerink",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup index.ts --format cjs,esm --dts",
+    "lint": "tsc"
+  },
+  "devDependencies": {
+    "@types/matter-js": "^0.18.2",
+    "@types/react": "^18.0.27",
+    "matter-js": "^0.18.0",
+    "react": "^18.2.0",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.4"
+  },
+  "peerDependencies": {
+    "matter-js": "^0.18.0",
+    "react": "^16.8 || ^17 || ^18",
+    "react-dom": "^16.8 || ^17 || ^18"
+  },
+  "dependencies": {
+    "@use-gesture/react": "^10.2.24"
+  }
+}

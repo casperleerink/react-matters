@@ -5,7 +5,7 @@ import {
   MatterContainer,
   MouseConstraint,
   Render,
-} from "../../index";
+} from "../../../packages/react-matters/index";
 import CircleExample from "./CircleExample";
 import RectExample from "./RectExample";
 import Text from "./Text";
