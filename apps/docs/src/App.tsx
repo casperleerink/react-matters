@@ -22,7 +22,7 @@ const rectangles = new Array(10).fill(null).map((_, idx) => {
   return {
     id: idx,
     x: Math.random() * 800 + 200,
-    y: Math.random() * 600 + 100,
+    y: Math.random() * 100 + 100,
     rounded: 8,
   };
 });
@@ -42,25 +42,12 @@ function App() {
         engineOptions={{
           gravity: {
             x: 0,
-            y: 2.2,
+            y: 1,
           },
         }}
       >
         <Bounds />
-        {/* <MouseConstraint /> */}
-        <CircleExample />
         <RectExample />
-        {circles.map((circle) => (
-          <Circle
-            key={circle.id}
-            className="w-16 h-16 bg-slate-800"
-            initialPosition={{
-              x: circle.x,
-              y: circle.y,
-            }}
-            draggable
-          />
-        ))}
         {rectangles.map((rectangle) => (
           <Rectangle
             key={rectangle.id}

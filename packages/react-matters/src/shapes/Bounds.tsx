@@ -5,6 +5,12 @@ import { Rectangle } from "./Rectangle";
 interface Props {
   restitution?: number;
   friction?: number;
+  enabled?: {
+    top?: boolean;
+    right?: boolean;
+    bottom?: boolean;
+    left?: boolean;
+  };
 }
 
 const getRects = (width: number, height: number) => {
@@ -42,7 +48,11 @@ const getRects = (width: number, height: number) => {
   return rects;
 };
 
-export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
+export const Bounds = ({
+  restitution = 0.0,
+  friction = 0.5,
+  enabled = { top: true, right: true, bottom: true, left: true },
+}: Props) => {
   const [container] = useStore((state) => state.container);
   const { x: width, y: height } = container;
 
@@ -50,27 +60,46 @@ export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
   const rects = getRects(width, height);
   return (
     <>
-      {rects.map((rect) => {
-        return (
-          <Rectangle
-            key={rect.id}
-            initialPosition={{
-              x: rect.x,
-              y: rect.y,
-            }}
-            bodyOptions={{
-              isStatic: true,
-              restitution,
-              friction,
-            }}
-            style={{
-              width: `${rect.width}px`,
-              height: `${rect.height}px`,
-            }}
-            visible={false}
-          />
-        );
-      })}
+      {enabled.bottom && (
+        <Rectangle
+          initialPosition={{ x: width * 0.5, y: height + 100 }}
+          bodyOptions={{ isStatic: true, restitution, friction }}
+          style={{
+            width: `${width}px`,
+            height: `200px`,
+          }}
+          visible={true}
+        />
+      )}
+      {enabled.top && (
+        <Rectangle
+          initialPosition={{ x: width * 0.5, y: -100 }}
+          bodyOptions={{ isStatic: true, restitution, friction }}
+          style={{
+            width: `${width}px`,
+            height: `200px`,
+          }}
+          visible={false}
+        />
+      )}
+      <Rectangle
+        initialPosition={{ x: -100, y: height * 0.5 }}
+        bodyOptions={{ isStatic: true, restitution, friction }}
+        style={{
+          width: `200px`,
+          height: `${height}px`,
+        }}
+        visible={false}
+      />
+      <Rectangle
+        initialPosition={{ x: width + 100, y: height * 0.5 }}
+        bodyOptions={{ isStatic: true, restitution, friction }}
+        style={{
+          width: `200px`,
+          height: `${height}px`,
+        }}
+        visible={false}
+      />
     </>
   );
 };

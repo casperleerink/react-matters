@@ -17,16 +17,10 @@ const Text: React.FC<Props> = ({ className = "" }) => {
       bodyOptions={{
         friction: 0.5,
       }}
-      className="text-gray-900 px-4 py-1 border border-gray-50"
+      draggable
+      className="text-gray-900 px-4 py-1 border border-gray-900"
     >
-      <p
-        onClick={() => {
-          console.log("Hello world!");
-        }}
-        className="text-gray-900"
-      >
-        Hello world!
-      </p>
+      <p className="text-gray-900">Hello world!</p>
     </Rectangle>
   );
 };

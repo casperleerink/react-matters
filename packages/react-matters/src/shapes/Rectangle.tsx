@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Body, type IBodyDefinition } from "matter-js";
+import React, { useEffect, useRef } from "react";
+import { type IBodyDefinition, Body, Vertices } from "matter-js";
 import { type Element, useStore } from "../core/store";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
@@ -63,7 +63,50 @@ export const Rectangle = ({
       lineRef,
     })
   );
+
+  // useIsomorphicLayoutEffect(() => {
+  //   // const currentPosition = { ...rectangle.current.body.position };
+
+  //   Body.setVertices(
+  //     rectangle.current.body,
+  //     Vertices.create(
+  //       [
+  //         { x: 0, y: 0 },
+  //         { x: width, y: 0 },
+  //         { x: width, y: height },
+  //         { x: 0, y: height },
+  //       ],
+  //       rectangle.current.body
+  //     )
+  //   );
+  // }, [width, height]);
+
+  // useEffect(() => {
+  //   if (bodyOptions?.isStatic) {
+  //     Body.setPosition(rectangle.current.body, initialPosition);
+  //   }
+  // }, [bodyOptions?.isStatic, initialPosition.x, initialPosition.y]);
+
+  // useEffect(() => {
+  //   addElement({ element: rectangle.current, elements, engine });
+  //   return () => {
+  //     removeElement({ element: rectangle.current, elements, engine });
+  //   };
+  // }, []);
+
   useIsomorphicLayoutEffect(() => {
+    const bounds = rectangle.current.body.bounds;
+    const oldDimensions = {
+      width: Math.round(bounds.max.x - bounds.min.x),
+      height: Math.round(bounds.max.y - bounds.min.y),
+    };
+    if (oldDimensions.width !== width || oldDimensions.height !== height) {
+      Body.scale(
+        rectangle.current.body,
+        width / oldDimensions.width,
+        height / oldDimensions.height
+      );
+    }
     const newRectangle = createRectangle({
       width,
       height,
@@ -75,8 +118,12 @@ export const Rectangle = ({
       },
       constraint,
       position: {
-        x: rectangle.current.body.position.x,
-        y: rectangle.current.body.position.y,
+        x: bodyOptions?.isStatic
+          ? initialPosition.x
+          : rectangle.current.body.position.x,
+        y: bodyOptions?.isStatic
+          ? initialPosition.y
+          : rectangle.current.body.position.y,
       },
       ref: visible ? divRef : undefined,
       lineRef,
@@ -84,6 +131,10 @@ export const Rectangle = ({
     removeElement({ element: rectangle.current, elements, engine });
     rectangle.current = newRectangle;
     addElement({ element: newRectangle, elements, engine });
+
+    return () => {
+      removeElement({ element: rectangle.current, elements, engine });
+    };
   }, [width, height, bodyOptions, initialPosition.x, initialPosition.y]);
 
   const bind = useDrag({
@@ -117,12 +168,10 @@ export const Rectangle = ({
       <div
         ref={divRef}
         style={{
-          transform: `translate(${initialPosition.x - width * 0.5}px, ${
-            initialPosition.y - height * 0.5
-          }px) rotate(0deg)`,
           transformOrigin: "center",
           position: "absolute",
           opacity: visible ? 1 : 0,
+          pointerEvents: visible ? "auto" : "none",
           top: 0,
           left: 0,
           borderRadius: rounded,

@@ -15,7 +15,7 @@ export const Render = () => {
     timeRef.current = currentTime;
 
     if (engine) {
-      // update matter-js engine
+      // update matter-js engine, maxmimum of 100ms to prevent big jumps
       Engine.update(engine, delta < 100 ? delta : 100);
 
       //update HTML DOM positions
