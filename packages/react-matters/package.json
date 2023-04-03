@@ -1,7 +1,7 @@
 {
   "name": "react-matters",
   "license": "MIT",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "casperleerink",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
