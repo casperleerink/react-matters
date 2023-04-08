@@ -103,9 +103,6 @@ export const Circle = ({
       <div
         ref={divRef}
         style={{
-          transform: `translate(${initialPosition.x - width * 0.5}px, ${
-            initialPosition.y - height * 0.5
-          }px) rotate(0deg)`,
           transformOrigin: "center",
           position: "absolute",
           top: 0,

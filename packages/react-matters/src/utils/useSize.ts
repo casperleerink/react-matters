@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useRef, useState } from "react";
+import { MutableRefObject, useCallback, useState } from "react";
 
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
@@ -18,22 +18,27 @@ export function useSize(
   // Prevent too many rendering using useCallback
   const updateSize = useCallback(() => {
     if (!ref.current) return;
-    const { offsetWidth, offsetHeight } = ref.current;
-    setWidth(offsetWidth);
-    setHeight(offsetHeight);
+    const w = ref.current.offsetWidth;
+    const h = ref.current.offsetHeight;
+    setWidth(w);
+    setHeight(h);
     if (updateCallback) {
-      updateCallback({ width: offsetWidth, height: offsetHeight });
+      updateCallback({
+        width: w,
+        height: h,
+      });
     }
   }, [setWidth, setHeight]);
 
-  const resizeObserver = useRef(new ResizeObserver(updateSize));
   useIsomorphicLayoutEffect(() => {
-    updateSize();
-    resizeObserver.current.observe(ref.current!, {
+    const resizeObserver = new ResizeObserver(updateSize);
+    resizeObserver.observe(ref.current!, {
       box: "border-box",
     });
+
     return () => {
-      resizeObserver.current.unobserve(ref.current!);
+      resizeObserver.unobserve(ref.current!);
+      resizeObserver.disconnect();
     };
   }, []);
 

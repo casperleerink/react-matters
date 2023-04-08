@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-const Text: React.FC<Props> = ({ className = "" }) => {
+const Text: React.FC<Props> = ({}) => {
   const [width, height] = useContainerSize();
   if (!width || !height) return null;
   return (
@@ -18,9 +18,9 @@ const Text: React.FC<Props> = ({ className = "" }) => {
         friction: 0.5,
       }}
       draggable
-      className="text-gray-900 px-4 py-1 border border-gray-900"
+      className="text-gray-900 px-4 py-1 border border-gray-900 cursor-grab select-none active:cursor-grabbing"
     >
-      <p className="text-gray-900">Hello world!</p>
+      <p className="text-gray-900">Hello worldsssasdasd!</p>
     </Rectangle>
   );
 };

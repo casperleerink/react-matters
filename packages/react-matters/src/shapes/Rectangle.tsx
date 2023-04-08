@@ -95,18 +95,18 @@ export const Rectangle = ({
   // }, []);
 
   useIsomorphicLayoutEffect(() => {
-    const bounds = rectangle.current.body.bounds;
-    const oldDimensions = {
-      width: Math.round(bounds.max.x - bounds.min.x),
-      height: Math.round(bounds.max.y - bounds.min.y),
-    };
-    if (oldDimensions.width !== width || oldDimensions.height !== height) {
-      Body.scale(
-        rectangle.current.body,
-        width / oldDimensions.width,
-        height / oldDimensions.height
-      );
-    }
+    // const bounds = rectangle.current.body.bounds;
+    // const oldDimensions = {
+    //   width: Math.round(bounds.max.x - bounds.min.x),
+    //   height: Math.round(bounds.max.y - bounds.min.y),
+    // };
+    // if (oldDimensions.width !== width || oldDimensions.height !== height) {
+    //   Body.scale(
+    //     rectangle.current.body,
+    //     width / oldDimensions.width,
+    //     height / oldDimensions.height
+    //   );
+    // }
     const newRectangle = createRectangle({
       width,
       height,
@@ -149,6 +149,7 @@ export const Rectangle = ({
             position: "absolute",
             top: 0,
             left: 0,
+            pointerEvents: "none",
             ...constraint.renderProps?.style,
           }}
           pointerEvents="none"

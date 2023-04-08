@@ -13,14 +13,14 @@ const RectExample: React.FC<Props> = ({}) => {
     <Rectangle
       className="w-16 h-24 bg-slate-400"
       initialPosition={{
-        x: width * 0.15,
-        y: 200,
+        x: width * 0.5,
+        y: height * 0.6,
       }}
       rounded={16}
       constraint={{
         point: {
-          x: 0,
-          y: 400,
+          x: width * 0.5,
+          y: height * 0.5,
         },
         options: {
           stiffness: 0.02,

@@ -7,6 +7,7 @@ import {
   Render,
 } from "../../../packages/react-matters/index";
 import CircleExample from "./CircleExample";
+import Engine from "./Engine";
 import RectExample from "./RectExample";
 import Text from "./Text";
 
@@ -55,13 +56,14 @@ function App() {
               x: rectangle.x,
               y: rectangle.y,
             }}
-            className="w-16 h-20 bg-slate-600"
-            rounded={rectangle.rounded}
+            className="w-16 h-20 bg-slate-600 cursor-grab active:cursor-grabbing"
             draggable
+            rounded={rectangle.rounded}
           />
         ))}
         <Text />
         <Render />
+        <Engine />
       </MatterContainer>
       <div className="w-full h-screen bg-slate-400"></div>
     </div>

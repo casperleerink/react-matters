@@ -10,10 +10,6 @@ export const useDrag = ({ body, enabled }: Props) => {
   const previousDelta = useRef({ x: 0, y: 0 });
   const bind = useDragGesture(
     ({ delta: [dx, dy], first, last }) => {
-      const oldPosition = {
-        x: body.position.x,
-        y: body.position.y,
-      };
       if (first) {
         Body.setStatic(body, true);
       }

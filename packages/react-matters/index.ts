@@ -5,3 +5,4 @@ export { Circle } from "./src/shapes/Circle";
 export { Rectangle } from "./src/shapes/Rectangle";
 export { Render } from "./src/core/Render";
 export { useContainerSize } from "./src/utils/useContainerSize";
+export { useEngine } from "./src/utils/useEngine";
