@@ -1,10 +1,11 @@
-import { CSSProperties, useRef } from "react";
-import { type IBodyDefinition } from "matter-js";
+import { type CSSProperties, useRef, RefObject } from "react";
+import { type IBodyDefinition, type Body } from "matter-js";
 import { type Element, useStore } from "./store";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
 import { addElement, createBody, removeElement } from "../utils/element";
 import { useDrag } from "../utils/useDrag";
+import type { ReactDOMAttributes } from "@use-gesture/react/dist/declarations/src/types";
 
 // TODO: refactor into descriminated union
 interface Props {
@@ -27,13 +28,20 @@ const commonStyles: CSSProperties = {
   touchAction: "none",
 };
 
+type Returns<T> = {
+  ref: RefObject<T>;
+  style: CSSProperties;
+  matterBody: Body;
+  dragControls: (...args: any[]) => ReactDOMAttributes;
+};
+
 export const useBody = <T extends HTMLElement>({
   type,
   initialPosition,
   rounded = 0,
   bodyOptions,
   draggable,
-}: Props) => {
+}: Props): Returns<T> => {
   const ref = useRef<T>(null);
   const [width, height] = useSize(ref);
   const [elements] = useStore((state) => state.elements);

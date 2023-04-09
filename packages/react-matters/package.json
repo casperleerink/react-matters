@@ -1,7 +1,7 @@
 {
   "name": "react-matters",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "casperleerink",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/matter-js": "^0.18.2",
     "@types/react": "^18.0.27",
+    "csstype": "^3.1.2",
     "matter-js": "^0.18.0",
     "react": "^18.2.0",
     "tsup": "^6.5.0",
