@@ -2,26 +2,26 @@
 import React from "react";
 import { useRef, useMemo, useEffect } from "react";
 import { useStore } from "./store";
-
 import { Engine, type IEngineDefinition } from "matter-js";
 import { useSize } from "../utils/useSize";
+import { useRender } from "./useRender";
 
 interface Props {
   children: React.ReactNode;
-  engineOptions?: IEngineDefinition;
+  initEngineOptions?: IEngineDefinition;
 }
 
 export type ContainerProps = Props & JSX.IntrinsicElements["div"];
 
 export const Container = ({
   children,
-  engineOptions,
+  initEngineOptions,
   ...rest
 }: ContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null!);
 
   const [engine, setStore] = useStore((state) => state.engine);
-  useSize(containerRef, (size) => {
+  const [width, height] = useSize(containerRef, (size) => {
     setStore({
       container: {
         x: size.width,
@@ -31,17 +31,19 @@ export const Container = ({
   });
   useMemo(() => {
     if (!engine) {
-      setStore({ engine: Engine.create(engineOptions) });
+      setStore({ engine: Engine.create(initEngineOptions) });
     }
-  }, [engineOptions]);
+  }, [initEngineOptions]);
 
   useEffect(() => {
     setStore({ containerElement: containerRef.current });
   }, []);
 
+  useRender();
+
   return (
     <div ref={containerRef} {...rest}>
-      {children}
+      {width && height ? children : null}
     </div>
   );
 };

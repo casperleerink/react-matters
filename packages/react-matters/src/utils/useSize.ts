@@ -1,9 +1,9 @@
-import { MutableRefObject, useCallback, useState } from "react";
+import { RefObject, useCallback, useState } from "react";
 
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
-export function useSize(
-  ref: MutableRefObject<HTMLDivElement | null>,
+export function useSize<T extends HTMLElement>(
+  ref: RefObject<T>,
   updateCallback?: ({
     width,
     height,
@@ -12,8 +12,8 @@ export function useSize(
     height: number;
   }) => void
 ) {
-  const [width, setWidth] = useState(1);
-  const [height, setHeight] = useState(1);
+  const [width, setWidth] = useState<number | null>(null);
+  const [height, setHeight] = useState<number | null>(null);
 
   // Prevent too many rendering using useCallback
   const updateSize = useCallback(() => {
@@ -31,11 +31,11 @@ export function useSize(
   }, [setWidth, setHeight]);
 
   useIsomorphicLayoutEffect(() => {
+    updateSize();
     const resizeObserver = new ResizeObserver(updateSize);
     resizeObserver.observe(ref.current!, {
       box: "border-box",
     });
-
     return () => {
       resizeObserver.unobserve(ref.current!);
       resizeObserver.disconnect();

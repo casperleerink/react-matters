@@ -1,27 +1,34 @@
 import {
-  Rectangle,
   useContainerSize,
+  useBody,
 } from "../../../packages/react-matters/index";
 
 interface Props {
   className?: string;
 }
 
-const Text: React.FC<Props> = ({}) => {
+const Text: React.FC<Props> = ({ className }) => {
   const [width, height] = useContainerSize();
-  if (!width || !height) return null;
+
+  const { style, ref, dragControls } = useBody<HTMLDivElement>({
+    type: "rectangle",
+    initialPosition: {
+      x: width * 0.5,
+      y: height * 0.5,
+    },
+    rounded: 8,
+    draggable: true,
+  });
+
   return (
-    <Rectangle
-      initialPosition={{ x: width * 0.5, y: height * 0.1 }}
-      rounded={4}
-      bodyOptions={{
-        friction: 0.5,
-      }}
-      draggable
-      className="text-gray-900 px-4 py-1 border border-gray-900 cursor-grab select-none active:cursor-grabbing"
+    <div
+      ref={ref}
+      style={style}
+      {...dragControls()}
+      className="px-8 py-4 border border-gray-100 select-none"
     >
-      <p className="text-gray-900">Hello worldsssasdasd!</p>
-    </Rectangle>
+      <p className="text-gray-100">Hello world!</p>
+    </div>
   );
 };
 

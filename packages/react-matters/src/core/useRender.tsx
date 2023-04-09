@@ -1,14 +1,14 @@
 import { Engine } from "matter-js";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useStore } from "./store";
 
-export const Render = () => {
+export const useRender = () => {
   const animationFrameRef = useRef<number | undefined>();
   const timeRef = useRef<number>(0);
   const [elements] = useStore((state) => state.elements);
   const [engine] = useStore((state) => state.engine);
 
-  const tick = () => {
+  const tick = useCallback(() => {
     // keep time
     const currentTime = performance.now();
     const delta = currentTime - timeRef.current;
@@ -29,7 +29,7 @@ export const Render = () => {
       });
     }
     animationFrameRef.current = window.requestAnimationFrame(tick);
-  };
+  }, [elements, engine, timeRef.current]);
 
   useEffect(() => {
     timeRef.current = performance.now();
@@ -40,6 +40,4 @@ export const Render = () => {
       }
     };
   }, []);
-
-  return null;
 };

@@ -91,17 +91,17 @@ export const createCircle = ({
   };
 };
 
-interface RectangleProps {
+interface RectangleProps<T> {
   position: Vector2;
   width: number;
   height: number;
   options?: Matter.IChamferableBodyDefinition;
+  ref?: React.RefObject<T>;
   constraint?: ConstraintType;
-  ref?: React.MutableRefObject<HTMLElement>;
   lineRef?: React.MutableRefObject<SVGLineElement | null>;
 }
 
-export const createRectangle = ({
+export const createRectangle = <T extends HTMLElement>({
   position,
   width,
   height,
@@ -109,7 +109,7 @@ export const createRectangle = ({
   constraint,
   ref,
   lineRef,
-}: RectangleProps): Element => {
+}: RectangleProps<T>): Element => {
   const rect = Bodies.rectangle(position.x, position.y, width, height, options);
   return {
     body: rect,
@@ -141,5 +141,48 @@ export const createRectangle = ({
           }
         }
       : undefined,
+  };
+};
+
+//TODO: make type into descriminant union
+interface BodyProps<T extends HTMLElement> {
+  type: "circle" | "rectangle";
+  position: Vector2;
+  width: number | null;
+  height: number | null;
+  options?: Matter.IChamferableBodyDefinition;
+  ref: React.RefObject<T>;
+}
+
+export const createBody = <T extends HTMLElement>({
+  type,
+  position,
+  width,
+  height,
+  options,
+  ref,
+}: BodyProps<T>) => {
+  const body =
+    type === "rectangle"
+      ? Bodies.rectangle(
+          position.x,
+          position.y,
+          width ?? 0,
+          height ?? 0,
+          options
+        )
+      : Bodies.circle(position.x, position.y, width ? width / 2 : 0, options);
+
+  const render: Element["render"] = ({ position, angle }) => {
+    if (!ref.current || !width || !height) return;
+    ref.current.style.transform = `translate(
+        ${position.x - width * 0.5}px,
+        ${position.y - height * 0.5}px
+        )
+        rotate(${angle}rad)`;
+  };
+  return {
+    body,
+    render,
   };
 };
