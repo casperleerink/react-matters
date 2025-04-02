@@ -22,7 +22,7 @@ const Circle: React.FC<Props> = ({ position }) => {
       ref={ref}
       style={style}
       {...dragControls()}
-      className="border-gray-100 border p-4 w-16 h-16"
+      className="border-gray-100 border w-16 h-16"
     />
   );
 };
