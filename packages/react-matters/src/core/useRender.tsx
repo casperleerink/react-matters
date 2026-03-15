@@ -1,25 +1,20 @@
-import { Engine } from "matter-js";
-import { useCallback, useEffect, useRef } from "react";
-import { useStore } from "./store";
+import { Runner, Events } from "matter-js";
+import { useEffect, useRef } from "react";
+import { useStore, type Element } from "./store";
 
 export const useRender = () => {
-  const animationFrameRef = useRef<number | undefined>();
-  const timeRef = useRef<number>(0);
+  const elementsRef = useRef<Set<Element>>(new Set());
   const [elements] = useStore((state) => state.elements);
   const [engine] = useStore((state) => state.engine);
 
-  const tick = useCallback(() => {
-    // keep time
-    const currentTime = performance.now();
-    const delta = currentTime - timeRef.current;
-    timeRef.current = currentTime;
+  elementsRef.current = elements;
 
-    if (engine) {
-      // update matter-js engine, maxmimum of 100ms to prevent big jumps
-      Engine.update(engine, delta < 100 ? delta : 100);
+  useEffect(() => {
+    if (!engine) return;
+    const runner = Runner.create();
 
-      //update HTML DOM positions
-      elements.forEach((element) => {
+    Events.on(runner, "afterTick", () => {
+      elementsRef.current.forEach((element) => {
         if (element.render) {
           element.render({
             position: element.body.position,
@@ -27,17 +22,13 @@ export const useRender = () => {
           });
         }
       });
-    }
-    animationFrameRef.current = window.requestAnimationFrame(tick);
-  }, [elements, engine, timeRef.current]);
+    });
 
-  useEffect(() => {
-    timeRef.current = performance.now();
-    tick();
+    Runner.run(runner, engine);
+
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      Runner.stop(runner);
+      Events.off(runner, "afterTick");
     };
-  }, []);
+  }, [engine]);
 };

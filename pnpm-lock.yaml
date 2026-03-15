@@ -77,8 +77,8 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@types/matter-js':
-        specifier: ^0.19.7
-        version: 0.19.8
+        specifier: ^0.20.0
+        version: 0.20.2
       '@types/react':
         specifier: ^18.0.27
         version: 18.3.20
@@ -577,8 +577,8 @@ packages:
   '@types/matter-js@0.18.5':
     resolution: {integrity: sha512-CV8m/FUmjmFNFcI7fUnsKcCLeqbf0kzWdKOTLGrpfKwWwrF6ggLaQlHNsg8267TkkiUAPoXY/7q6H9qwmR5TZg==}
 
-  '@types/matter-js@0.19.8':
-    resolution: {integrity: sha512-W2ZWG58Lijv/4v768NgpeyFqqiOyslmAU7qqM1Lhz4XBoUgGtZtPz4CjcOKYtqHIak14dvPldslQhltqLTWwsw==}
+  '@types/matter-js@0.20.2':
+    resolution: {integrity: sha512-3PPKy3QxvZ89h9+wdBV2488I1JLVs7DEpIkPvgO8JC1mUdiVSO37ZIvVctOTD7hIq8OAL2gJ3ugGSuUip6DhCw==}
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
@@ -2295,7 +2295,7 @@ snapshots:
 
   '@types/matter-js@0.18.5': {}
 
-  '@types/matter-js@0.19.8': {}
+  '@types/matter-js@0.20.2': {}
 
   '@types/node@12.20.55': {}
 

@@ -12,7 +12,7 @@
     "publish": "npm publish --access=public ./"
   },
   "devDependencies": {
-    "@types/matter-js": "^0.19.7",
+    "@types/matter-js": "^0.20.0",
     "@types/react": "^18.0.27",
     "csstype": "^3.1.2",
     "matter-js": "^0.20.0",
