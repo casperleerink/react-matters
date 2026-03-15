@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  type RefObject,
-} from "react";
+import { createContext, useContext, type RefObject } from "react";
 import type { Engine } from "matter-js";
 import type { Element } from "./store";
 
@@ -35,7 +31,9 @@ export const ContainerSizeContext =
 export function useContainerSizeContext(): ContainerSizeContextValue {
   const ctx = useContext(ContainerSizeContext);
   if (!ctx) {
-    throw new Error("useContainerSizeContext must be used within a <Container>");
+    throw new Error(
+      "useContainerSizeContext must be used within a <Container>",
+    );
   }
   return ctx;
 }

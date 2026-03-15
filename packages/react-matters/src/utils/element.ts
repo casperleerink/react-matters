@@ -73,11 +73,11 @@ export const createCircle = ({
             const line = lineRef.current;
             line.setAttribute(
               "x2",
-              `${position.x + (constraint.options?.pointB?.x ?? 0)}`
+              `${position.x + (constraint.options?.pointB?.x ?? 0)}`,
             );
             line.setAttribute(
               "y2",
-              `${position.y + (constraint.options?.pointB?.y ?? 0)}`
+              `${position.y + (constraint.options?.pointB?.y ?? 0)}`,
             );
           }
         }
@@ -122,11 +122,11 @@ export const createRectangle = <T extends HTMLElement>({
             const line = lineRef.current;
             line.setAttribute(
               "x2",
-              `${position.x + (constraint.options?.pointB?.x ?? 0)}`
+              `${position.x + (constraint.options?.pointB?.x ?? 0)}`,
             );
             line.setAttribute(
               "y2",
-              `${position.y + (constraint.options?.pointB?.y ?? 0)}`
+              `${position.y + (constraint.options?.pointB?.y ?? 0)}`,
             );
           }
         }
@@ -159,7 +159,7 @@ export const createBody = <T extends HTMLElement>({
           position.y,
           width ?? 0,
           height ?? 0,
-          options
+          options,
         )
       : Bodies.circle(position.x, position.y, width ? width / 2 : 0, options);
 

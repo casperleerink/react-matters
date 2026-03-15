@@ -40,6 +40,7 @@ Disable gravity: set `engine.gravity.scale = 0`.
    - `Sleeping.update(allBodies, delta)`
 
 4. **Apply gravity** to all non-static, non-sleeping bodies:
+
    ```
    body.force.y += body.mass * gravity.y * gravity.scale
    body.force.x += body.mass * gravity.x * gravity.scale
@@ -127,13 +128,15 @@ Starts `requestAnimationFrame` loop calling `Runner.tick()` each frame.
    ```
 
 ### Runner events (per frame):
+
 - `beforeTick` → `tick` → [N x (`beforeUpdate` → Engine.update → `afterUpdate`)] → `afterTick`
 
 ### Key constants:
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `_maxFrameDelta` | 66.667ms | 15Hz max acceptable frame |
-| `_frameDeltaFallback` | 16.667ms | Fallback if unmeasurable |
-| `_timeBufferMargin` | 1.5 | Allow 1.5x timestep backlog |
-| `_smoothingLowerBound` | 0.1 | 10th percentile |
-| `_smoothingUpperBound` | 0.9 | 90th percentile |
+
+| Constant               | Value    | Purpose                     |
+| ---------------------- | -------- | --------------------------- |
+| `_maxFrameDelta`       | 66.667ms | 15Hz max acceptable frame   |
+| `_frameDeltaFallback`  | 16.667ms | Fallback if unmeasurable    |
+| `_timeBufferMargin`    | 1.5      | Allow 1.5x timestep backlog |
+| `_smoothingLowerBound` | 0.1      | 10th percentile             |
+| `_smoothingUpperBound` | 0.9      | 90th percentile             |

@@ -6,12 +6,23 @@ import {
   useBody,
   useContainerSize,
 } from "react-matters";
+import { useControls, button } from "leva";
 import Layout from "../components/Layout";
 
 const GROUPS = [
   { name: "Red", category: 0x0001, color: "border-red-400", bg: "bg-red-400" },
-  { name: "Green", category: 0x0002, color: "border-green-400", bg: "bg-green-400" },
-  { name: "Blue", category: 0x0004, color: "border-blue-400", bg: "bg-blue-400" },
+  {
+    name: "Green",
+    category: 0x0002,
+    color: "border-green-400",
+    bg: "bg-green-400",
+  },
+  {
+    name: "Blue",
+    category: 0x0004,
+    color: "border-blue-400",
+    bg: "bg-blue-400",
+  },
 ] as const;
 
 interface BodyDef {
@@ -77,6 +88,12 @@ const CollisionFilters = () => {
     ]);
   }, []);
 
+  useControls("Spawn", {
+    "Spawn Red": button(() => spawnGroup(0)),
+    "Spawn Green": button(() => spawnGroup(1)),
+    "Spawn Blue": button(() => spawnGroup(2)),
+  });
+
   return (
     <Layout title="Collision Filters">
       <Container
@@ -85,21 +102,6 @@ const CollisionFilters = () => {
       >
         <CollisionFiltersInner bodies={bodies} />
       </Container>
-      <div className="fixed top-12 left-4 z-50 flex items-center gap-3">
-        {GROUPS.map((group, i) => (
-          <button
-            key={group.name}
-            onClick={() => spawnGroup(i)}
-            className="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 rounded transition-colors flex items-center gap-2"
-          >
-            <span className={`inline-block w-3 h-3 rounded-full ${group.bg}`} />
-            Spawn {group.name}
-          </button>
-        ))}
-        <span className="text-xs text-gray-400 ml-2">
-          Same colors collide, different colors pass through
-        </span>
-      </div>
     </Layout>
   );
 };

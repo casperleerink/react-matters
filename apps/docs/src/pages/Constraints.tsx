@@ -8,6 +8,7 @@ import {
   useContainerSize,
 } from "react-matters";
 import type { Body } from "matter-js";
+import { useControls } from "leva";
 import Layout from "../components/Layout";
 
 // --- SVG constraint line visualization ---
@@ -71,7 +72,13 @@ const Pendulum = () => {
     <>
       <ConstraintLine bodyA={matterBody} pointB={anchorPoint} />
       <circle cx={anchorPoint.x} cy={anchorPoint.y} r={4} fill="#9ca3af" />
-      <foreignObject x={0} y={0} width="100%" height="100%" style={{ overflow: "visible" }}>
+      <foreignObject
+        x={0}
+        y={0}
+        width="100%"
+        height="100%"
+        style={{ overflow: "visible" }}
+      >
         <div
           ref={ref}
           style={style}
@@ -170,21 +177,29 @@ const Chain = () => {
 const Spring: React.FC<{ stiffness: number }> = ({ stiffness }) => {
   const [width, height] = useContainerSize();
 
-  const { ref: refA, style: styleA, dragControls: dragA, matterBody: bodyA } =
-    useBody<HTMLDivElement>({
-      type: "circle",
-      x: width * 0.75,
-      y: height * 0.2,
-      draggable: true,
-    });
+  const {
+    ref: refA,
+    style: styleA,
+    dragControls: dragA,
+    matterBody: bodyA,
+  } = useBody<HTMLDivElement>({
+    type: "circle",
+    x: width * 0.75,
+    y: height * 0.2,
+    draggable: true,
+  });
 
-  const { ref: refB, style: styleB, dragControls: dragB, matterBody: bodyB } =
-    useBody<HTMLDivElement>({
-      type: "circle",
-      x: width * 0.85,
-      y: height * 0.45,
-      draggable: true,
-    });
+  const {
+    ref: refB,
+    style: styleB,
+    dragControls: dragB,
+    matterBody: bodyB,
+  } = useBody<HTMLDivElement>({
+    type: "circle",
+    x: width * 0.85,
+    y: height * 0.45,
+    draggable: true,
+  });
 
   useConstraint({
     bodyA,
@@ -197,7 +212,13 @@ const Spring: React.FC<{ stiffness: number }> = ({ stiffness }) => {
   return (
     <>
       <ConstraintLine bodyA={bodyA} bodyB={bodyB} color="#f472b6" />
-      <foreignObject x={0} y={0} width="100%" height="100%" style={{ overflow: "visible" }}>
+      <foreignObject
+        x={0}
+        y={0}
+        width="100%"
+        height="100%"
+        style={{ overflow: "visible" }}
+      >
         <div
           ref={refA}
           style={styleA}
@@ -232,7 +253,9 @@ const ConstraintsInner: React.FC<{ springStiffness: number }> = ({
 };
 
 const Constraints = () => {
-  const [springStiffness, setSpringStiffness] = useState(0.02);
+  const { springStiffness } = useControls("Spring", {
+    springStiffness: { value: 0.02, min: 0.005, max: 0.2, step: 0.005 },
+  });
 
   return (
     <Layout title="Constraints">
@@ -242,22 +265,6 @@ const Constraints = () => {
       >
         <ConstraintsInner springStiffness={springStiffness} />
       </Container>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-800/90 backdrop-blur px-4 py-3 flex items-center gap-4">
-        <span className="text-xs text-gray-300">Pendulum (blue) &bull; Chain (green) &bull; Spring (pink)</span>
-        <label className="flex items-center gap-2 text-xs ml-auto">
-          <span>Spring Stiffness</span>
-          <input
-            type="range"
-            min={0.005}
-            max={0.2}
-            step={0.005}
-            value={springStiffness}
-            onChange={(e) => setSpringStiffness(Number(e.target.value))}
-            className="w-32"
-          />
-          <span className="w-10 text-gray-400">{springStiffness.toFixed(3)}</span>
-        </label>
-      </div>
     </Layout>
   );
 };

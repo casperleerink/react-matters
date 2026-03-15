@@ -8,6 +8,7 @@ import {
   useContainerSize,
   useEngine,
 } from "react-matters";
+import { useControls, button } from "leva";
 import Layout from "../components/Layout";
 
 interface BodyDef {
@@ -144,6 +145,11 @@ const Sensors = () => {
     setOverlapCount(count);
   }, []);
 
+  useControls("Sensor", {
+    "Spawn Body": button(() => spawnBody()),
+    overlapping: { value: overlapCount, editable: false },
+  });
+
   return (
     <Layout title="Sensors">
       <Container
@@ -156,17 +162,6 @@ const Sensors = () => {
           onOverlapChange={handleOverlapChange}
         />
       </Container>
-      <div className="fixed top-12 left-4 z-50 flex items-center gap-3">
-        <button
-          onClick={spawnBody}
-          className="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 rounded transition-colors"
-        >
-          Spawn Body
-        </button>
-        <span className="text-xs text-gray-400">
-          Bodies inside sensor: {overlapCount}
-        </span>
-      </div>
     </Layout>
   );
 };

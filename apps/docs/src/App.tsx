@@ -7,9 +7,7 @@ import CollisionFilters from "./pages/CollisionFilters";
 import Sensors from "./pages/Sensors";
 
 function App() {
-  const [route, setRoute] = useState(
-    window.location.hash.slice(1) || "home"
-  );
+  const [route, setRoute] = useState(window.location.hash.slice(1) || "home");
 
   useEffect(() => {
     const onHashChange = () => {

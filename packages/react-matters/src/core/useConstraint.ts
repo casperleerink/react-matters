@@ -1,5 +1,10 @@
 import { useRef } from "react";
-import { Constraint, Composite, Body, type IConstraintDefinition } from "matter-js";
+import {
+  Constraint,
+  Composite,
+  Body,
+  type IConstraintDefinition,
+} from "matter-js";
 import { usePhysics } from "./PhysicsContext";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
 
@@ -106,7 +111,16 @@ export const useConstraint = ({
     if (angularStiffness !== undefined)
       (c as unknown as Record<string, unknown>).angularStiffness =
         angularStiffness;
-  }, [pointA?.x, pointA?.y, pointB?.x, pointB?.y, length, stiffness, damping, angularStiffness]);
+  }, [
+    pointA?.x,
+    pointA?.y,
+    pointB?.x,
+    pointB?.y,
+    length,
+    stiffness,
+    damping,
+    angularStiffness,
+  ]);
 
   return constraintRef;
 };

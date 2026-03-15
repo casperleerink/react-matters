@@ -24,7 +24,7 @@ collision response and constraints.
 ## Quick Start
 
 ```javascript
-import Matter from 'matter-js';
+import Matter from "matter-js";
 const { Engine, Runner, Bodies, Composite } = Matter;
 
 const engine = Engine.create();
@@ -60,16 +60,19 @@ Read these reference files based on what aspect of Matter.js you need:
 ## Key Concepts
 
 ### Verlet Integration (not Euler)
+
 Matter.js derives velocity from position history (`pos - posPrev`), not by storing velocity directly.
 This means `Body.setVelocity()` actually modifies `positionPrev`, and `Body.getVelocity()` is
 calculated from `(position - positionPrev) * baseDelta / deltaTime`.
 
 ### Forces Are Per-Frame
+
 `body.force` and `body.torque` are zeroed after each Engine.update(). Reapply forces every frame.
 Use `Body.applyForce(body, position, force)` to apply force at a world-space point (creates torque
 if offset from center of mass).
 
 ### Collision Filter Logic
+
 ```
 if (groupA === groupB && groupA !== 0):
     collide = groupA > 0   // positive group = collide, negative = ignore
@@ -78,14 +81,17 @@ else:
 ```
 
 ### Static vs Dynamic
+
 Setting `isStatic: true` gives a body infinite mass/inertia (inverseMass = 0). Use
 `Body.setStatic()` to toggle at runtime (it stores/restores original properties).
 
 ### World Is Just a Composite
+
 `engine.world` is a `Composite` instance. `World` module is a backward-compatibility alias.
 Gravity is on `engine.gravity`, not `world.gravity`.
 
 ### Timing
+
 - `Engine._deltaMax = 16.667ms` (60Hz baseline)
 - `Body._baseDelta = 16.667ms` (velocity normalization reference)
 - Runner uses requestAnimationFrame with frame delta smoothing and snapping
@@ -93,6 +99,7 @@ Gravity is on `engine.gravity`, not `world.gravity`.
 - `body.timeScale` controls per-body speed
 
 ### Iteration Counts (Engine defaults)
+
 - `positionIterations: 6` - penetration correction passes
 - `velocityIterations: 4` - impulse response passes
 - `constraintIterations: 2` - constraint solving passes

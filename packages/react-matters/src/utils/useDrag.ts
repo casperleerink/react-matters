@@ -10,7 +10,13 @@ interface Props {
 export const useDrag = ({ bodyRef, enabled }: Props) => {
   const wasStaticRef = useRef(false);
   const bind = useDragGesture(
-    ({ delta: [dx, dy], velocity: [vx, vy], direction: [dirX, dirY], first, last }) => {
+    ({
+      delta: [dx, dy],
+      velocity: [vx, vy],
+      direction: [dirX, dirY],
+      first,
+      last,
+    }) => {
       const body = bodyRef.current;
       if (!body) return;
       if (first) {
@@ -34,7 +40,7 @@ export const useDrag = ({ bodyRef, enabled }: Props) => {
     },
     {
       enabled,
-    }
+    },
   );
   return bind;
 };

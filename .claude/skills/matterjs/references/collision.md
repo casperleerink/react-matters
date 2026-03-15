@@ -3,6 +3,7 @@
 ## Overview
 
 The collision pipeline has three phases:
+
 1. **Broadphase** - Sweep-and-prune AABB rejection (Detector)
 2. **Narrowphase** - SAT polygon intersection (Collision)
 3. **Pair management** - Track collision lifecycle (Pairs)
@@ -27,16 +28,19 @@ The collision pipeline has three phases:
 ```javascript
 // Layer 1: Group check (priority)
 if (filterA.group === filterB.group && filterA.group !== 0)
-    return filterA.group > 0;  // positive = collide, negative = ignore
+  return filterA.group > 0; // positive = collide, negative = ignore
 
 // Layer 2: Bilateral category/mask check
-return (filterA.mask & filterB.category) !== 0
-    && (filterB.mask & filterA.category) !== 0;
+return (
+  (filterA.mask & filterB.category) !== 0 &&
+  (filterB.mask & filterA.category) !== 0
+);
 ```
 
 **Defaults**: `category: 0x0001, mask: 0xFFFFFFFF, group: 0` (all collide with all).
 
 **Usage patterns**:
+
 - **Ignore specific pair**: put both in same negative group
 - **Force collide pair**: put both in same positive group
 - **Category system**: assign powers of 2 as categories, set masks to include/exclude
@@ -59,6 +63,7 @@ return (filterA.mask & filterB.category) !== 0
 3. **Choose minimum overlap** from both sets as collision normal
 
 4. **Orient normal** from bodyA toward bodyB:
+
    ```
    if (normal . (bodyB.position - bodyA.position) < 0) flip normal
    ```
@@ -71,6 +76,7 @@ return (filterA.mask & filterB.category) !== 0
    - Return 1-2 contact points
 
 ### Collision object structure:
+
 ```javascript
 {
   collided: boolean,
@@ -86,18 +92,21 @@ return (filterA.mask & filterB.category) !== 0
 }
 ```
 
-### Hill-climbing support search (_findSupports):
+### Hill-climbing support search (\_findSupports):
+
 1. Compute `distance = normal . (bodyAPos - vertex)` for each vertex
 2. Deepest vertex = minimum distance
 3. Check neighbors (prev and next vertex in array)
 4. Return deepest + best neighbor (defines contact edge)
 
 ### Vertex containment (Vertices.contains):
+
 - Ray-casting algorithm to check if point is inside polygon
 
 ## Pair Management
 
 ### Pair structure:
+
 ```javascript
 {
   id: string,                // 'A{minId}B{maxId}'
@@ -121,6 +130,7 @@ return (filterA.mask & filterB.category) !== 0
 ```
 
 ### Pairs container:
+
 ```javascript
 {
   table: {},                 // hash map: pairId → pair (O(1) lookup)
@@ -132,11 +142,13 @@ return (filterA.mask & filterB.category) !== 0
 ```
 
 ### Pair lifecycle:
+
 1. **New collision** → `Pair.create()` → `collisionStart`
 2. **Continuing collision** → `Pair.update()` → `collisionActive`
 3. **Ended collision** → deactivate → `collisionEnd` (removed from table unless sleeping)
 
 ### Contact object:
+
 ```javascript
 {
   vertex: vertex,            // the contact point
@@ -148,4 +160,5 @@ return (filterA.mask & filterB.category) !== 0
 Contact impulses persist across frames at the same contact point for warmstarting.
 
 ### Sensor pairs:
+
 Created and tracked for event purposes but resolver skips them (no physical response).

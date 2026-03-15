@@ -10,7 +10,7 @@ export function useSize<T extends HTMLElement>(
   }: {
     width: number;
     height: number;
-  }) => void
+  }) => void,
 ) {
   const [width, setWidth] = useState<number | null>(null);
   const [height, setHeight] = useState<number | null>(null);

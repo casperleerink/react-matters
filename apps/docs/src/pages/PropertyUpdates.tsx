@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Container,
   Bounds,
@@ -6,6 +5,7 @@ import {
   useBody,
   useContainerSize,
 } from "react-matters";
+import { useControls } from "leva";
 import Layout from "../components/Layout";
 
 const Platform: React.FC<{ x: number; y: number; w: number }> = ({
@@ -129,11 +129,16 @@ const PropertyUpdatesInner: React.FC<{
 };
 
 const PropertyUpdates = () => {
-  const [restitution, setRestitution] = useState(0.5);
-  const [friction, setFriction] = useState(0.1);
-  const [density, setDensity] = useState(0.001);
-  const [frictionAir, setFrictionAir] = useState(0.01);
-  const [isStatic, setIsStatic] = useState(false);
+  const { restitution, friction, density, frictionAir, isStatic } = useControls(
+    "Physics Properties",
+    {
+      restitution: { value: 0.5, min: 0, max: 1, step: 0.01 },
+      friction: { value: 0.1, min: 0, max: 1, step: 0.01 },
+      density: { value: 0.001, min: 0.001, max: 0.05, step: 0.001 },
+      frictionAir: { value: 0.01, min: 0, max: 0.1, step: 0.001 },
+      isStatic: false,
+    },
+  );
 
   return (
     <Layout title="Property Updates">
@@ -149,68 +154,6 @@ const PropertyUpdates = () => {
           isStatic={isStatic}
         />
       </Container>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-800/90 backdrop-blur px-4 py-3 flex flex-wrap items-center gap-x-6 gap-y-2">
-        <label className="flex items-center gap-2 text-xs">
-          <span className="w-20">Restitution</span>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={restitution}
-            onChange={(e) => setRestitution(Number(e.target.value))}
-            className="w-24"
-          />
-          <span className="w-8 text-gray-400">{restitution.toFixed(2)}</span>
-        </label>
-        <label className="flex items-center gap-2 text-xs">
-          <span className="w-20">Friction</span>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={friction}
-            onChange={(e) => setFriction(Number(e.target.value))}
-            className="w-24"
-          />
-          <span className="w-8 text-gray-400">{friction.toFixed(2)}</span>
-        </label>
-        <label className="flex items-center gap-2 text-xs">
-          <span className="w-20">Density</span>
-          <input
-            type="range"
-            min={0.001}
-            max={0.05}
-            step={0.001}
-            value={density}
-            onChange={(e) => setDensity(Number(e.target.value))}
-            className="w-24"
-          />
-          <span className="w-10 text-gray-400">{density.toFixed(3)}</span>
-        </label>
-        <label className="flex items-center gap-2 text-xs">
-          <span className="w-20">Air Friction</span>
-          <input
-            type="range"
-            min={0}
-            max={0.1}
-            step={0.001}
-            value={frictionAir}
-            onChange={(e) => setFrictionAir(Number(e.target.value))}
-            className="w-24"
-          />
-          <span className="w-10 text-gray-400">{frictionAir.toFixed(3)}</span>
-        </label>
-        <label className="flex items-center gap-2 text-xs cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isStatic}
-            onChange={(e) => setIsStatic(e.target.checked)}
-          />
-          <span>Static</span>
-        </label>
-      </div>
     </Layout>
   );
 };

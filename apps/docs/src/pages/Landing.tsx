@@ -87,11 +87,7 @@ const DecorativeCircles = () => {
   return (
     <>
       {circles.map((c) => (
-        <DecorativeCircle
-          key={c.id}
-          x={width * c.x}
-          y={height * c.y}
-        />
+        <DecorativeCircle key={c.id} x={width * c.x} y={height * c.y} />
       ))}
     </>
   );

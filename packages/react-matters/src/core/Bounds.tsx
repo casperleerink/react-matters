@@ -58,7 +58,7 @@ export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
           isStatic: true,
         }),
       };
-    })
+    }),
   );
 
   useIsomorphicLayoutEffect(() => {

@@ -76,7 +76,8 @@ export const useBody = <T extends HTMLElement>({
   if (density !== undefined) bodyOptions.density = density;
   if (slop !== undefined) bodyOptions.slop = slop;
   if (timeScale !== undefined) bodyOptions.timeScale = timeScale;
-  if (collisionFilter !== undefined) bodyOptions.collisionFilter = collisionFilter;
+  if (collisionFilter !== undefined)
+    bodyOptions.collisionFilter = collisionFilter;
 
   const element = useRef<Element>(
     createBody({
@@ -86,7 +87,7 @@ export const useBody = <T extends HTMLElement>({
       options: bodyOptions,
       position: { x, y },
       ref,
-    })
+    }),
   );
 
   // Ref to always point to the current body (avoids stale closures in useDrag)

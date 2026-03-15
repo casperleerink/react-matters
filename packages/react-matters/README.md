@@ -72,32 +72,32 @@ function App() {
 
 Wraps your physics scene. All hooks must be used inside a `Container`.
 
-| Prop | Type | Description |
-| --- | --- | --- |
+| Prop                | Type                | Description                                     |
+| ------------------- | ------------------- | ----------------------------------------------- |
 | `initEngineOptions` | `IEngineDefinition` | Initial Matter.js engine options (e.g. gravity) |
-| `...rest` | `div` props | Passed through to the wrapper `<div>` |
+| `...rest`           | `div` props         | Passed through to the wrapper `<div>`           |
 
 ### `useBody<T>(props)`
 
 Creates a physics body from any HTML element. Returns `{ ref, style, matterBody, dragControls }`.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `type` | `"rectangle" \| "circle"` | Body shape |
-| `x` | `number` | Initial x position |
-| `y` | `number` | Initial y position |
-| `rounded` | `number` | Corner radius (rectangles) or chamfer (circles) |
-| `draggable` | `boolean` | Enable drag interaction |
-| `isStatic` | `boolean` | Fixed in place |
-| `isSensor` | `boolean` | Detects collisions without physical response |
-| `friction` | `number` | Surface friction |
-| `frictionStatic` | `number` | Static friction |
-| `frictionAir` | `number` | Air resistance |
-| `restitution` | `number` | Bounciness |
-| `density` | `number` | Body density |
-| `slop` | `number` | Collision slop tolerance |
-| `timeScale` | `number` | Per-body time scaling |
-| `collisionFilter` | `{ category?, mask?, group? }` | Collision filtering |
+| Prop              | Type                           | Description                                     |
+| ----------------- | ------------------------------ | ----------------------------------------------- |
+| `type`            | `"rectangle" \| "circle"`      | Body shape                                      |
+| `x`               | `number`                       | Initial x position                              |
+| `y`               | `number`                       | Initial y position                              |
+| `rounded`         | `number`                       | Corner radius (rectangles) or chamfer (circles) |
+| `draggable`       | `boolean`                      | Enable drag interaction                         |
+| `isStatic`        | `boolean`                      | Fixed in place                                  |
+| `isSensor`        | `boolean`                      | Detects collisions without physical response    |
+| `friction`        | `number`                       | Surface friction                                |
+| `frictionStatic`  | `number`                       | Static friction                                 |
+| `frictionAir`     | `number`                       | Air resistance                                  |
+| `restitution`     | `number`                       | Bounciness                                      |
+| `density`         | `number`                       | Body density                                    |
+| `slop`            | `number`                       | Collision slop tolerance                        |
+| `timeScale`       | `number`                       | Per-body time scaling                           |
+| `collisionFilter` | `{ category?, mask?, group? }` | Collision filtering                             |
 
 ### `useConstraint(props)`
 
@@ -111,25 +111,25 @@ useConstraint({ bodyA: matterBody, pointB: { x: 200, y: 100 }, stiffness: 1 });
 useConstraint({ bodyA: bodyA, bodyB: bodyB, stiffness: 0.02, length: 100 });
 ```
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `bodyA` | `Body` | First body |
-| `bodyB` | `Body` | Second body (omit for world constraint) |
-| `pointA` | `{ x, y }` | Anchor offset on bodyA |
-| `pointB` | `{ x, y }` | Anchor offset on bodyB, or world point if no bodyB |
-| `length` | `number` | Rest length |
-| `stiffness` | `number` | Stiffness (0–1) |
-| `damping` | `number` | Damping (0–1) |
-| `angularStiffness` | `number` | Angular stiffness |
+| Prop               | Type       | Description                                        |
+| ------------------ | ---------- | -------------------------------------------------- |
+| `bodyA`            | `Body`     | First body                                         |
+| `bodyB`            | `Body`     | Second body (omit for world constraint)            |
+| `pointA`           | `{ x, y }` | Anchor offset on bodyA                             |
+| `pointB`           | `{ x, y }` | Anchor offset on bodyB, or world point if no bodyB |
+| `length`           | `number`   | Rest length                                        |
+| `stiffness`        | `number`   | Stiffness (0–1)                                    |
+| `damping`          | `number`   | Damping (0–1)                                      |
+| `angularStiffness` | `number`   | Angular stiffness                                  |
 
 ### `<Bounds>`
 
 Adds invisible static walls around the container edges.
 
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `restitution` | `number` | `0` | Wall bounciness |
-| `friction` | `number` | `0.5` | Wall friction |
+| Prop          | Type     | Default | Description     |
+| ------------- | -------- | ------- | --------------- |
+| `restitution` | `number` | `0`     | Wall bounciness |
+| `friction`    | `number` | `0.5`   | Wall friction   |
 
 ### `<MouseConstraint>`
 

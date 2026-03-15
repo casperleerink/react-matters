@@ -9,10 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-matters": "workspace:*",
+    "leva": "^0.10.1",
     "matter-js": "^0.20.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-matters": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.1",

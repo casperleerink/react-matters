@@ -33,6 +33,7 @@
 **Auto-stiffness**: `1` if length > 0 (rigid), `0.7` if length === 0 (pin joint).
 
 **Render type auto-selection**:
+
 - `length === 0 && stiffness > 0.1` → `'pin'`, anchors = false
 - `stiffness < 0.9` → `'spring'`
 - Otherwise → `'line'`, anchors = true
@@ -42,6 +43,7 @@
 ### Execution in Engine.update (TWO passes):
 
 **Pass 1** (before collision detection):
+
 ```
 Constraint.preSolveAll(allBodies)    // apply warming
 for i in range(constraintIterations):
@@ -49,6 +51,7 @@ for i in range(constraintIterations):
 ```
 
 **Pass 2** (after position resolution):
+
 ```
 Constraint.preSolveAll(allBodies)    // apply warming
 for i in range(constraintIterations):
@@ -57,6 +60,7 @@ Constraint.postSolveAll(allBodies)   // update geometry, dampen impulses
 ```
 
 ### Constraint.solveAll order:
+
 1. Solve **fixed constraints** first (one body static or null)
 2. Then solve **free constraints** (both bodies dynamic)
 
@@ -65,12 +69,14 @@ This order prevents cascading instability.
 ### Constraint.solve(constraint, timeScale)
 
 **Step 1: Rotate anchor points** to match body rotation
+
 ```
 Vector.rotate(pointA, bodyA.angle - constraint.angleA, pointA)
 constraint.angleA = bodyA.angle
 ```
 
 **Step 2: World-space positions**
+
 ```
 pointAWorld = bodyA.position + pointA
 pointBWorld = bodyB.position + pointB
@@ -79,11 +85,13 @@ currentLength = magnitude(delta)
 ```
 
 **Step 3: Distance error**
+
 ```
 difference = (currentLength - constraint.length) / currentLength
 ```
 
 **Step 4: Stiffness scaling**
+
 ```
 // Rigid (stiffness >= 1 or length === 0):
 effectiveStiffness = stiffness * timeScale
@@ -93,11 +101,13 @@ effectiveStiffness = stiffness * timeScale * timeScale  // quadratic = more stab
 ```
 
 **Step 5: Corrective force**
+
 ```
 force = delta * difference * effectiveStiffness
 ```
 
 **Step 6: Mass distribution**
+
 ```
 massTotal = bodyA.inverseMass + bodyB.inverseMass
 share_A = bodyA.inverseMass / massTotal
@@ -106,6 +116,7 @@ share_B = bodyB.inverseMass / massTotal
 ```
 
 **Step 7: Damping** (if damping > 0)
+
 ```
 normal = normalize(delta)
 relativeVelocity = (bodyB.position - bodyB.positionPrev) - (bodyA.position - bodyA.positionPrev)
@@ -116,6 +127,7 @@ bodyB.positionPrev += damping * normal * normalVelocity * share_B
 ```
 
 **Step 8: Apply corrections**
+
 ```
 // Position correction
 bodyA.position -= force * share_A
@@ -133,17 +145,20 @@ bodyA.angle -= torque
 ### Constraint Warming
 
 **preSolveAll**: Apply 100% of cached impulse to body positions:
+
 ```
 body.position += body.constraintImpulse
 body.angle += body.constraintImpulse.angle
 ```
 
 **postSolveAll**: After solving, dampen cached impulse:
+
 ```
 body.constraintImpulse *= Constraint._warming  // *= 0.4
 ```
 
 ### Constants
+
 - `Constraint._warming = 0.4` - impulse retention factor
 - `Constraint._torqueDampen = 1` - torque application factor
 - `Constraint._minLength = 0.000001` - prevent division by zero
@@ -155,6 +170,7 @@ body.constraintImpulse *= Constraint._warming  // *= 0.4
 Creates an interactive drag constraint.
 
 **Internal constraint defaults**:
+
 ```javascript
 {
   label: 'Mouse Constraint',
@@ -168,6 +184,7 @@ Creates an interactive drag constraint.
 ```
 
 **Properties**:
+
 ```javascript
 {
   type: 'mouseConstraint',
@@ -181,6 +198,7 @@ Creates an interactive drag constraint.
 ### Drag logic (MouseConstraint.update):
 
 **Mouse down**:
+
 1. Loop through all bodies
 2. Check bounds containment, then collision filter, then vertex containment
 3. Attach constraint: `bodyB = body`, `pointB = mousePos - bodyPos`
@@ -192,6 +210,7 @@ Creates an interactive drag constraint.
 **Mouse up**: Release `bodyB = null`, trigger `enddrag` event
 
 ### Events
+
 - `mousemove`, `mousedown`, `mouseup` (from Mouse)
 - `startdrag` (event.body = dragged body)
 - `enddrag` (event.body = released body)
@@ -199,29 +218,38 @@ Creates an interactive drag constraint.
 ## Common Constraint Patterns
 
 ### Pin joint (pivot):
+
 ```javascript
-Constraint.create({ bodyA: a, bodyB: b, length: 0 })
+Constraint.create({ bodyA: a, bodyB: b, length: 0 });
 // stiffness defaults to 0.7 for length=0
 ```
 
 ### Spring:
+
 ```javascript
-Constraint.create({ bodyA: a, bodyB: b, stiffness: 0.05, damping: 0.01 })
+Constraint.create({ bodyA: a, bodyB: b, stiffness: 0.05, damping: 0.01 });
 // length auto-calculated from initial positions
 ```
 
 ### Fixed point (anchor to world):
+
 ```javascript
-Constraint.create({ bodyA: body, pointB: { x: 400, y: 100 } })
+Constraint.create({ bodyA: body, pointB: { x: 400, y: 100 } });
 // bodyB=null, pointB is world position
 ```
 
 ### Rope (chain of constraints):
+
 ```javascript
 // Create chain of bodies connected by constraints
 for (let i = 1; i < bodies.length; i++) {
-  Composite.add(world, Constraint.create({
-    bodyA: bodies[i-1], bodyB: bodies[i], length: segmentLength
-  }));
+  Composite.add(
+    world,
+    Constraint.create({
+      bodyA: bodies[i - 1],
+      bodyB: bodies[i],
+      length: segmentLength,
+    }),
+  );
 }
 ```
