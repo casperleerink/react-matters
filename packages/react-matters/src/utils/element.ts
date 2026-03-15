@@ -8,7 +8,7 @@ import Matter, {
   type IConstraintDefinition,
 } from "matter-js";
 import { Vector2 } from "../types/vector";
-import { SVGProps } from "react";
+import { type SVGProps, type RefObject } from "react";
 
 interface Props {
   element: Element;
@@ -45,8 +45,8 @@ interface CircleProps {
   radius: number;
   options?: IBodyDefinition;
   constraint?: ConstraintType;
-  ref?: React.MutableRefObject<HTMLElement>;
-  lineRef?: React.MutableRefObject<SVGLineElement | null>;
+  ref?: RefObject<HTMLElement | null>;
+  lineRef?: RefObject<SVGLineElement | null>;
 }
 
 export const createCircle = ({
@@ -96,9 +96,9 @@ interface RectangleProps<T> {
   width: number;
   height: number;
   options?: Matter.IChamferableBodyDefinition;
-  ref?: React.RefObject<T>;
+  ref?: RefObject<T | null>;
   constraint?: ConstraintType;
-  lineRef?: React.MutableRefObject<SVGLineElement | null>;
+  lineRef?: RefObject<SVGLineElement | null>;
 }
 
 export const createRectangle = <T extends HTMLElement>({
@@ -151,7 +151,7 @@ interface BodyProps<T extends HTMLElement> {
   width: number | null;
   height: number | null;
   options?: Matter.IChamferableBodyDefinition;
-  ref: React.RefObject<T>;
+  ref: RefObject<T | null>;
 }
 
 export const createBody = <T extends HTMLElement>({

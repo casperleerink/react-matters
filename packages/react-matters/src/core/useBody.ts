@@ -36,7 +36,7 @@ const commonStyles: CSSProperties = {
 };
 
 type Returns<T> = {
-  ref: RefObject<T>;
+  ref: RefObject<T | null>;
   style: CSSProperties;
   matterBody: Body;
   dragControls: (...args: any[]) => ReactDOMAttributes;

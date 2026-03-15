@@ -1,13 +1,12 @@
 "use client";
-import React from "react";
-import { useRef, useMemo, useEffect } from "react";
+import { type ReactNode, type JSX, useRef, useMemo, useEffect } from "react";
 import { useStore } from "./store";
 import { Engine, type IEngineDefinition } from "matter-js";
 import { useSize } from "../utils/useSize";
 import { useRender } from "./useRender";
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   initEngineOptions?: IEngineDefinition;
 }
 

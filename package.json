@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --no-cache --continue",
+    "dev": "turbo run dev --continue",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "publish": "cd packages/react-matters && pnpm publish",
@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.22.0",
-    "eslint": "^7.32.0",
-    "prettier": "^2.5.1",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
     "turbo": "latest"
   },
   "packageManager": "pnpm@10.7.1"

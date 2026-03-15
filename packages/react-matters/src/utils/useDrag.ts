@@ -3,7 +3,7 @@ import { Body } from "matter-js";
 import { useRef, type RefObject } from "react";
 
 interface Props {
-  bodyRef: RefObject<Body>;
+  bodyRef: RefObject<Body | null>;
   enabled: boolean;
 }
 

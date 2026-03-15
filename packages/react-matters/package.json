@@ -8,24 +8,24 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup index.ts --format cjs,esm --dts",
+    "dev": "tsup index.ts --format cjs,esm --dts --watch",
     "lint": "tsc",
     "publish": "npm publish --access=public ./"
   },
   "devDependencies": {
     "@types/matter-js": "^0.20.0",
-    "@types/react": "^18.0.27",
-    "csstype": "^3.1.2",
+    "@types/react": "^19.0.0",
     "matter-js": "^0.20.0",
-    "react": "^18.2.0",
-    "tsup": "^6.5.0",
-    "typescript": "^4.9.4"
+    "react": "^19.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "matter-js": "^0.20.0",
-    "react": "^16.8 || ^17 || ^18",
-    "react-dom": "^16.8 || ^17 || ^18"
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "dependencies": {
-    "@use-gesture/react": "^10.2.24"
+    "@use-gesture/react": "^10.3.1"
   }
 }

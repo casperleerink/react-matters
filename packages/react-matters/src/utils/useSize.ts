@@ -3,7 +3,7 @@ import { RefObject, useCallback, useState } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 export function useSize<T extends HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   updateCallback?: ({
     width,
     height,
