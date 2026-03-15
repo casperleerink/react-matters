@@ -1,31 +1,33 @@
 import { useDrag as useDragGesture } from "@use-gesture/react";
 import { Body } from "matter-js";
-import { useRef } from "react";
+import { useRef, type RefObject } from "react";
+
 interface Props {
-  body: Body;
+  bodyRef: RefObject<Body>;
   enabled: boolean;
 }
 
-export const useDrag = ({ body, enabled }: Props) => {
-  const previousDelta = useRef({ x: 0, y: 0 });
+export const useDrag = ({ bodyRef, enabled }: Props) => {
+  const wasStaticRef = useRef(false);
   const bind = useDragGesture(
     ({ delta: [dx, dy], first, last }) => {
+      const body = bodyRef.current;
+      if (!body) return;
       if (first) {
+        wasStaticRef.current = body.isStatic;
         Body.setStatic(body, true);
-      }
-      if (last) {
-        Body.setStatic(body, false);
       }
       Body.setPosition(body, {
         x: body.position.x + dx,
         y: body.position.y + dy,
       });
-      Body.setVelocity(body, previousDelta.current);
-      previousDelta.current.x = dx;
-      previousDelta.current.y = dy;
+      if (last) {
+        Body.setStatic(body, wasStaticRef.current);
+        Body.setVelocity(body, { x: dx, y: dy });
+      }
     },
     {
-      enabled: enabled,
+      enabled,
     }
   );
   return bind;

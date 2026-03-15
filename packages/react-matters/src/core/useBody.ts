@@ -1,5 +1,5 @@
-import { type CSSProperties, useRef, RefObject } from "react";
-import { type IBodyDefinition, type Body } from "matter-js";
+import { type CSSProperties, useRef, type RefObject } from "react";
+import { Body } from "matter-js";
 import { type Element, useStore } from "./store";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
@@ -7,17 +7,23 @@ import { addElement, createBody, removeElement } from "../utils/element";
 import { useDrag } from "../utils/useDrag";
 import type { ReactDOMAttributes } from "@use-gesture/react/dist/declarations/src/types";
 
-// TODO: refactor into descriminated union
 interface Props {
   type: "rectangle" | "circle";
-  className?: string;
-  initialPosition: {
-    x: number;
-    y: number;
-  };
+  x: number;
+  y: number;
   rounded?: number;
-  bodyOptions?: IBodyDefinition;
   draggable?: boolean;
+  // Mutable physics properties (updated via Body.set without recreating)
+  isStatic?: boolean;
+  isSensor?: boolean;
+  friction?: number;
+  frictionStatic?: number;
+  frictionAir?: number;
+  restitution?: number;
+  density?: number;
+  slop?: number;
+  timeScale?: number;
+  collisionFilter?: { category?: number; mask?: number; group?: number };
 }
 
 const commonStyles: CSSProperties = {
@@ -26,6 +32,7 @@ const commonStyles: CSSProperties = {
   left: 0,
   transformOrigin: "center",
   touchAction: "none",
+  willChange: "transform",
 };
 
 type Returns<T> = {
@@ -37,67 +44,112 @@ type Returns<T> = {
 
 export const useBody = <T extends HTMLElement>({
   type,
-  initialPosition,
+  x,
+  y,
   rounded = 0,
-  bodyOptions,
   draggable,
+  isStatic,
+  isSensor,
+  friction,
+  frictionStatic,
+  frictionAir,
+  restitution,
+  density,
+  slop,
+  timeScale,
+  collisionFilter,
 }: Props): Returns<T> => {
   const ref = useRef<T>(null);
   const [width, height] = useSize(ref);
   const [elements] = useStore((state) => state.elements);
   const [engine] = useStore((state) => state.engine);
 
+  const bodyOptions = {
+    isStatic,
+    isSensor,
+    friction,
+    frictionStatic,
+    frictionAir,
+    restitution,
+    density,
+    slop,
+    timeScale,
+    collisionFilter,
+    chamfer: { radius: rounded },
+  };
+
   const element = useRef<Element>(
     createBody({
       type,
       width,
       height,
-      options: {
-        ...bodyOptions,
-        chamfer: {
-          radius: rounded,
-        },
-      },
-      position: {
-        x: initialPosition.x,
-        y: initialPosition.y,
-      },
-      ref: ref,
+      options: bodyOptions,
+      position: { x, y },
+      ref,
     })
   );
 
+  // Ref to always point to the current body (avoids stale closures in useDrag)
+  const bodyRef = useRef<Body>(element.current.body);
+
+  // Recreate body only when geometry changes (type, measured size, chamfer)
   useIsomorphicLayoutEffect(() => {
-    const newBody = createBody({
+    const currentBody = element.current.body;
+    const position = isStatic
+      ? { x, y }
+      : { x: currentBody.position.x, y: currentBody.position.y };
+
+    const newElement = createBody({
       type,
       width,
       height,
-      options: {
-        ...bodyOptions,
-        chamfer: {
-          radius: rounded,
-        },
-      },
-      position: {
-        x: bodyOptions?.isStatic
-          ? initialPosition.x
-          : element.current.body.position.x,
-        y: bodyOptions?.isStatic
-          ? initialPosition.y
-          : element.current.body.position.y,
-      },
-      ref: ref,
+      options: bodyOptions,
+      position,
+      ref,
     });
+
     removeElement({ element: element.current, elements, engine });
-    element.current = newBody;
-    addElement({ element: newBody, elements, engine });
+    element.current = newElement;
+    bodyRef.current = newElement.body;
+    addElement({ element: newElement, elements, engine });
 
     return () => {
       removeElement({ element: element.current, elements, engine });
     };
-  }, [width, height, bodyOptions, initialPosition.x, initialPosition.y]);
+  }, [type, width, height, rounded]);
+
+  // Update physics properties on existing body without recreating
+  useIsomorphicLayoutEffect(() => {
+    const body = element.current.body;
+    Body.set(body, {
+      ...(isStatic !== undefined && { isStatic }),
+      ...(isSensor !== undefined && { isSensor }),
+      ...(friction !== undefined && { friction }),
+      ...(frictionStatic !== undefined && { frictionStatic }),
+      ...(frictionAir !== undefined && { frictionAir }),
+      ...(restitution !== undefined && { restitution }),
+      ...(density !== undefined && { density }),
+      ...(slop !== undefined && { slop }),
+      ...(timeScale !== undefined && { timeScale }),
+      ...(collisionFilter !== undefined && { collisionFilter }),
+    });
+  }, [
+    isStatic,
+    isSensor,
+    friction,
+    frictionStatic,
+    frictionAir,
+    restitution,
+    density,
+    slop,
+    timeScale,
+    collisionFilter?.category,
+    collisionFilter?.mask,
+    collisionFilter?.group,
+  ]);
 
   const dragControls = useDrag({
-    body: element.current.body,
+    bodyRef,
     enabled: draggable ?? false,
   });
 
@@ -106,15 +158,8 @@ export const useBody = <T extends HTMLElement>({
     dragControls,
     style:
       type === "circle"
-        ? {
-            ...commonStyles,
-            borderRadius: "9999px",
-            aspectRatio: "1/1",
-          }
-        : {
-            ...commonStyles,
-            borderRadius: rounded,
-          },
+        ? { ...commonStyles, borderRadius: "9999px", aspectRatio: "1/1" }
+        : { ...commonStyles, borderRadius: rounded },
     matterBody: element.current.body,
   };
 };

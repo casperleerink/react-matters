@@ -11,10 +11,8 @@ const Circle: React.FC<Props> = ({ position }) => {
   const [width, height] = useContainerSize();
   const { ref, style, dragControls } = useBody<HTMLDivElement>({
     type: "circle",
-    initialPosition: {
-      x: width * position.x,
-      y: height * position.y,
-    },
+    x: width * position.x,
+    y: height * position.y,
     draggable: true,
   });
   return (

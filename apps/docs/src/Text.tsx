@@ -12,10 +12,8 @@ const Text: React.FC<Props> = ({ className }) => {
 
   const { style, ref, dragControls } = useBody<HTMLDivElement>({
     type: "rectangle",
-    initialPosition: {
-      x: width * 0.5,
-      y: height * 0.5,
-    },
+    x: width * 0.5,
+    y: height * 0.5,
     rounded: 8,
     draggable: true,
   });
