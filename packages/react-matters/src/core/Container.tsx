@@ -1,5 +1,5 @@
 "use client";
-import { type ReactNode, type JSX, useRef, useMemo, useEffect } from "react";
+import { type ReactNode, type JSX, useRef, useEffect } from "react";
 import { useStore } from "./store";
 import { Engine, type IEngineDefinition } from "matter-js";
 import { useSize } from "../utils/useSize";
@@ -28,11 +28,11 @@ export const Container = ({
       },
     });
   });
-  useMemo(() => {
-    if (!engine) {
-      setStore({ engine: Engine.create(initEngineOptions) });
-    }
-  }, [initEngineOptions]);
+  const engineInitialized = useRef(false);
+  if (!engineInitialized.current) {
+    engineInitialized.current = true;
+    setStore({ engine: Engine.create(initEngineOptions) });
+  }
 
   useEffect(() => {
     setStore({ containerElement: containerRef.current });
