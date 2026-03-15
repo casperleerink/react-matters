@@ -1,5 +1,14 @@
 # react-matters
 
+## 0.2.3
+
+### Patch Changes
+
+- Fix `useSize` cleanup calling `unobserve` on null `ref.current` after unmount — `disconnect()` already handles cleanup
+- Fix `useConstraint` silently ignoring `pointA`/`pointB` changes — anchor position updates are now applied without recreating the constraint
+- Fix `useDrag` throw velocity using single-frame delta instead of smoothed gesture velocity, which caused erratic or dead fling behavior on drag release
+- Clean up multiline CSS transform strings in render functions to use single-line format
+
 ## 0.2.2
 
 ### Patch Changes
