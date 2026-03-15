@@ -32,8 +32,9 @@ export function useSize<T extends HTMLElement>(
 
   useIsomorphicLayoutEffect(() => {
     updateSize();
+    if (!ref.current) return;
     const resizeObserver = new ResizeObserver(updateSize);
-    resizeObserver.observe(ref.current!, {
+    resizeObserver.observe(ref.current, {
       box: "border-box",
     });
     return () => {
