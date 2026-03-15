@@ -1,4 +1,4 @@
-import { useEngine } from "../../../packages/react-matters/index";
+import { useEngine } from "react-matters";
 
 interface Props {
   className?: string;

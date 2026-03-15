@@ -1,7 +1,4 @@
-import {
-  useContainerSize,
-  useBody,
-} from "../../../packages/react-matters/index";
+import { useContainerSize, useBody } from "react-matters";
 
 interface Props {
   className?: string;

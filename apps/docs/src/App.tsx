@@ -1,44 +1,38 @@
-import Circle from "./Circle";
-import { Bounds, Container } from "../../../packages/react-matters/index";
-import Engine from "./Engine";
-import Text from "./Text";
-
-const circles = new Array(30).fill(null).map((_, idx) => {
-  return {
-    id: idx,
-    x: Math.random(),
-    y: Math.random(),
-  };
-});
+import { useState, useEffect } from "react";
+import Landing from "./pages/Landing";
+import DynamicBodies from "./pages/DynamicBodies";
+import PropertyUpdates from "./pages/PropertyUpdates";
+import Constraints from "./pages/Constraints";
+import CollisionFilters from "./pages/CollisionFilters";
+import Sensors from "./pages/Sensors";
 
 function App() {
-  return (
-    <div className="w-full">
-      <Container
-        className="w-full h-screen relative bg-gray-900 overflow-hidden"
-        style={{
-          width: "100vw",
-          height: "100vh",
-          position: "relative",
-          overflow: "hidden",
-        }}
-        initEngineOptions={{
-          gravity: {
-            x: 0,
-            y: 1,
-          },
-        }}
-      >
-        <Text />
-
-        {circles.map((circle) => (
-          <Circle key={circle.id} position={{ x: circle.x, y: circle.y }} />
-        ))}
-        <Bounds />
-        <Engine />
-      </Container>
-    </div>
+  const [route, setRoute] = useState(
+    window.location.hash.slice(1) || "home"
   );
+
+  useEffect(() => {
+    const onHashChange = () => {
+      setRoute(window.location.hash.slice(1) || "home");
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  switch (route) {
+    case "dynamic-bodies":
+      return <DynamicBodies />;
+    case "property-updates":
+      return <PropertyUpdates />;
+    case "constraints":
+      return <Constraints />;
+    case "collision-filters":
+      return <CollisionFilters />;
+    case "sensors":
+      return <Sensors />;
+    default:
+      return <Landing />;
+  }
 }
 
 export default App;

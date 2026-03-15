@@ -1,7 +1,4 @@
-import {
-  useBody,
-  useContainerSize,
-} from "../../../packages/react-matters/index";
+import { useBody, useContainerSize } from "react-matters";
 
 interface Props {
   position: { x: number; y: number };
