@@ -10,7 +10,7 @@ interface Props {
 export const useDrag = ({ bodyRef, enabled }: Props) => {
   const wasStaticRef = useRef(false);
   const bind = useDragGesture(
-    ({ delta: [dx, dy], first, last }) => {
+    ({ delta: [dx, dy], velocity: [vx, vy], direction: [dirX, dirY], first, last }) => {
       const body = bodyRef.current;
       if (!body) return;
       if (first) {
@@ -23,7 +23,13 @@ export const useDrag = ({ bodyRef, enabled }: Props) => {
       });
       if (last) {
         Body.setStatic(body, wasStaticRef.current);
-        Body.setVelocity(body, { x: dx, y: dy });
+        // velocity from @use-gesture is in px/ms (always positive), direction gives the sign.
+        // Matter.js expects px/tick (~16.67ms at 60fps).
+        const scale = 1000 / 60;
+        Body.setVelocity(body, {
+          x: vx * dirX * scale,
+          y: vy * dirY * scale,
+        });
       }
     },
     {

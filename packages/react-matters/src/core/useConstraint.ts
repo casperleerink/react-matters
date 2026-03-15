@@ -100,13 +100,15 @@ export const useConstraint = ({
   useIsomorphicLayoutEffect(() => {
     if (!constraintRef.current) return;
     const c = constraintRef.current;
+    if (pointA !== undefined) c.pointA = pointA;
+    if (pointB !== undefined) c.pointB = pointB;
     if (length !== undefined) c.length = length;
     if (stiffness !== undefined) c.stiffness = stiffness;
     if (damping !== undefined) c.damping = damping;
     if (angularStiffness !== undefined)
       (c as unknown as Record<string, unknown>).angularStiffness =
         angularStiffness;
-  }, [length, stiffness, damping, angularStiffness]);
+  }, [pointA?.x, pointA?.y, pointB?.x, pointB?.y, length, stiffness, damping, angularStiffness]);
 
   return constraintRef;
 };

@@ -70,11 +70,7 @@ export const createCircle = ({
     render: ref
       ? ({ position, angle }) => {
           if (!ref.current) return;
-          ref.current.style.transform = `translate(
-        ${position.x - radius}px,
-        ${position.y - radius}px
-        )
-        rotate(${angle}rad)`;
+          ref.current.style.transform = `translate(${position.x - radius}px, ${position.y - radius}px) rotate(${angle}rad)`;
           if (lineRef?.current && constraint) {
             const line = lineRef.current;
             line.setAttribute(
@@ -123,11 +119,7 @@ export const createRectangle = <T extends HTMLElement>({
     render: ref
       ? ({ position, angle }) => {
           if (!ref.current) return;
-          ref.current.style.transform = `translate(
-        ${position.x - width * 0.5}px,
-        ${position.y - height * 0.5}px
-        )
-        rotate(${angle}rad)`;
+          ref.current.style.transform = `translate(${position.x - width * 0.5}px, ${position.y - height * 0.5}px) rotate(${angle}rad)`;
           if (lineRef?.current && constraint) {
             const line = lineRef.current;
             line.setAttribute(
@@ -175,11 +167,7 @@ export const createBody = <T extends HTMLElement>({
 
   const render: Element["render"] = ({ position, angle }) => {
     if (!ref.current || !width || !height) return;
-    ref.current.style.transform = `translate(
-        ${position.x - width * 0.5}px,
-        ${position.y - height * 0.5}px
-        )
-        rotate(${angle}rad)`;
+    ref.current.style.transform = `translate(${position.x - width * 0.5}px, ${position.y - height * 0.5}px) rotate(${angle}rad)`;
   };
   return {
     body,

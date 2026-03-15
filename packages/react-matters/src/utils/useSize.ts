@@ -37,7 +37,6 @@ export function useSize<T extends HTMLElement>(
       box: "border-box",
     });
     return () => {
-      resizeObserver.unobserve(ref.current!);
       resizeObserver.disconnect();
     };
   }, []);
