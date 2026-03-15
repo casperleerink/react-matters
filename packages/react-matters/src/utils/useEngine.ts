@@ -1,6 +1,5 @@
-import { useStore } from "../core/store";
+import { usePhysics } from "../core/PhysicsContext";
 
 export const useEngine = () => {
-  const [engine] = useStore((state) => state.engine);
-  return engine;
+  return usePhysics().engine;
 };

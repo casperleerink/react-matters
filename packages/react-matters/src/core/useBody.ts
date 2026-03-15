@@ -1,6 +1,7 @@
 import { type CSSProperties, useRef, type RefObject } from "react";
 import { Body } from "matter-js";
-import { type Element, useStore } from "./store";
+import type { Element } from "./store";
+import { usePhysics } from "./PhysicsContext";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
 import { addElement, createBody, removeElement } from "../utils/element";
@@ -61,8 +62,7 @@ export const useBody = <T extends HTMLElement>({
 }: Props): Returns<T> => {
   const ref = useRef<T>(null);
   const [width, height] = useSize(ref);
-  const [elements] = useStore((state) => state.elements);
-  const [engine] = useStore((state) => state.engine);
+  const { engine, elements } = usePhysics();
 
   const bodyOptions: Record<string, unknown> = {
     chamfer: { radius: rounded },

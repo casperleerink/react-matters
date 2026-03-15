@@ -1,9 +1,14 @@
 "use client";
-import { type ReactNode, type JSX, useRef, useEffect } from "react";
-import { useStore } from "./store";
+import { type ReactNode, type JSX, useRef, useState } from "react";
 import { Engine, type IEngineDefinition } from "matter-js";
 import { useSize } from "../utils/useSize";
 import { useRender } from "./useRender";
+import {
+  PhysicsContext,
+  ContainerSizeContext,
+  type PhysicsContextValue,
+} from "./PhysicsContext";
+import type { Element } from "./store";
 
 interface Props {
   children: ReactNode;
@@ -12,6 +17,11 @@ interface Props {
 
 export type ContainerProps = Props & JSX.IntrinsicElements["div"];
 
+const RenderLoop = () => {
+  useRender();
+  return null;
+};
+
 export const Container = ({
   children,
   initEngineOptions,
@@ -19,30 +29,29 @@ export const Container = ({
 }: ContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null!);
 
-  const [engine, setStore] = useStore((state) => state.engine);
-  const [width, height] = useSize(containerRef, (size) => {
-    setStore({
-      container: {
-        x: size.width,
-        y: size.height,
-      },
-    });
-  });
-  const engineInitialized = useRef(false);
-  if (!engineInitialized.current) {
-    engineInitialized.current = true;
-    setStore({ engine: Engine.create(initEngineOptions) });
+  // Create engine and elements once, synchronously
+  const physicsRef = useRef<PhysicsContextValue | null>(null);
+  if (!physicsRef.current) {
+    physicsRef.current = {
+      engine: Engine.create(initEngineOptions),
+      elements: new Set<Element>(),
+      containerRef,
+    };
   }
 
-  useEffect(() => {
-    setStore({ containerElement: containerRef.current });
-  }, []);
-
-  useRender();
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [width, height] = useSize(containerRef, (size) => {
+    setContainerSize({ width: size.width, height: size.height });
+  });
 
   return (
-    <div ref={containerRef} {...rest}>
-      {width && height ? children : null}
-    </div>
+    <PhysicsContext.Provider value={physicsRef.current}>
+      <ContainerSizeContext.Provider value={containerSize}>
+        <div ref={containerRef} {...rest}>
+          <RenderLoop />
+          {width && height ? children : null}
+        </div>
+      </ContainerSizeContext.Provider>
+    </PhysicsContext.Provider>
   );
 };

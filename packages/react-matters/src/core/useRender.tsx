@@ -1,16 +1,15 @@
 import { Runner, Events } from "matter-js";
 import { useEffect, useRef } from "react";
-import { useStore, type Element } from "./store";
+import { usePhysics } from "./PhysicsContext";
+import type { Element } from "./store";
 
 export const useRender = () => {
-  const elementsRef = useRef<Set<Element>>(new Set());
-  const [elements] = useStore((state) => state.elements);
-  const [engine] = useStore((state) => state.engine);
+  const { engine, elements } = usePhysics();
+  const elementsRef = useRef<Set<Element>>(elements);
 
   elementsRef.current = elements;
 
   useEffect(() => {
-    if (!engine) return;
     const runner = Runner.create();
 
     Events.on(runner, "afterTick", () => {

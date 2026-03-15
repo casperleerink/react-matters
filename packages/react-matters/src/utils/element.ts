@@ -13,11 +13,10 @@ import { type SVGProps, type RefObject } from "react";
 interface Props {
   element: Element;
   elements: Set<Element>;
-  engine: Engine | null;
+  engine: Engine;
 }
 
 export const addElement = ({ element, elements, engine }: Props) => {
-  if (!engine) return null;
   elements.add(element);
   if (element.constraint) {
     Composite.add(engine.world, element.constraint);
@@ -26,7 +25,6 @@ export const addElement = ({ element, elements, engine }: Props) => {
 };
 
 export const removeElement = ({ element, elements, engine }: Props) => {
-  if (!engine) return null;
   elements.delete(element);
   if (element.constraint) {
     Composite.remove(engine.world, element.constraint);

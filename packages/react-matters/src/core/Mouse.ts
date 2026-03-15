@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStore } from "./store";
+import { usePhysics } from "./PhysicsContext";
 import {
   Composite,
   Mouse,
@@ -7,10 +7,10 @@ import {
 } from "matter-js";
 
 export const MouseConstraint = () => {
-  const [container] = useStore((state) => state.containerElement);
-  const [engine] = useStore((state) => state.engine);
+  const { engine, containerRef } = usePhysics();
   useEffect(() => {
-    if (!container || !engine) return;
+    const container = containerRef.current;
+    if (!container) return;
     const mouse = Mouse.create(container);
     // @ts-expect-error wheel not specified in matterjs types;
     mouse.element.removeEventListener("wheel", mouse.mousewheel);
@@ -29,7 +29,7 @@ export const MouseConstraint = () => {
     return () => {
       Composite.remove(engine.world, mouseConstraint);
     };
-  }, [engine, container]);
+  }, [engine, containerRef]);
 
   return null;
 };

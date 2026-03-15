@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Constraint, Composite, Body, type IConstraintDefinition } from "matter-js";
-import { useStore } from "./store";
+import { usePhysics } from "./PhysicsContext";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
 
 interface BodyConstraintProps {
@@ -66,13 +66,11 @@ export const useConstraint = ({
   damping,
   angularStiffness,
 }: Props & { bodyB?: Body }) => {
-  const [engine] = useStore((state) => state.engine);
+  const { engine } = usePhysics();
   const constraintRef = useRef<Constraint | null>(null);
 
   // Create/recreate constraint when bodies change
   useIsomorphicLayoutEffect(() => {
-    if (!engine) return;
-
     const options: IConstraintDefinition = {
       bodyA,
       pointA,

@@ -1,4 +1,4 @@
-export { Container } from "./src/core/MatterContainer";
+export { Container } from "./src/core/Container";
 export { useBody } from "./src/core/useBody";
 export { Bounds } from "./src/core/Bounds";
 export { MouseConstraint } from "./src/core/Mouse";

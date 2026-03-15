@@ -1,6 +1,6 @@
 import { Bodies } from "matter-js";
-import { useStore } from "./store";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { usePhysics, useContainerSizeContext } from "./PhysicsContext";
 import type { Element } from "./store";
 import { addElement, removeElement } from "../utils/element";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
@@ -46,9 +46,8 @@ const getRects = (width: number, height: number) => {
 };
 
 export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
-  const [{ x: width, y: height }] = useStore((state) => state.container);
-  const [elements] = useStore((state) => state.elements);
-  const [engine] = useStore((state) => state.engine);
+  const { width, height } = useContainerSizeContext();
+  const { engine, elements } = usePhysics();
 
   const elementsRef = useRef<Element[]>(
     getRects(width, height).map((rect) => {
@@ -63,7 +62,6 @@ export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
   );
 
   useIsomorphicLayoutEffect(() => {
-    if (!engine) return;
     const rects = getRects(width, height);
     rects.forEach((rect) => {
       const body = Bodies.rectangle(rect.x, rect.y, rect.width, rect.height, {
