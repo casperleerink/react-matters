@@ -3,12 +3,12 @@ import {
   Bounds,
   MouseConstraint,
   useBody,
-  useContainerSize,
+  type PositionValue,
 } from "react-matters";
 import { useControls } from "leva";
 import Layout from "../components/Layout";
 
-const Platform: React.FC<{ x: number; y: number; w: number }> = ({
+const Platform: React.FC<{ x: PositionValue; y: PositionValue; w: number }> = ({
   x,
   y,
   w,
@@ -29,7 +29,7 @@ const Platform: React.FC<{ x: number; y: number; w: number }> = ({
   );
 };
 
-const FallingBody: React.FC<{ x: number; y: number }> = ({ x, y }) => {
+const FallingBody: React.FC<{ x: PositionValue; y: PositionValue }> = ({ x, y }) => {
   const { ref, style, dragControls } = useBody<HTMLDivElement>({
     type: "circle",
     x,
@@ -55,11 +55,10 @@ const TestSubject: React.FC<{
   frictionAir: number;
   isStatic: boolean;
 }> = ({ restitution, friction, density, frictionAir, isStatic }) => {
-  const [width, height] = useContainerSize();
   const { ref, style, dragControls } = useBody<HTMLDivElement>({
     type: "rectangle",
-    x: width * 0.5,
-    y: height * 0.3,
+    x: "50%",
+    y: "30%",
     draggable: true,
     rounded: 8,
     restitution,
@@ -83,28 +82,24 @@ const TestSubject: React.FC<{
 
 const fallingBodies = Array.from({ length: 6 }, (_, i) => ({
   id: i,
-  x: 0.15 + Math.random() * 0.7,
-  y: Math.random() * 0.3,
+  x: `${Math.round(15 + Math.random() * 70)}%` as PositionValue,
+  y: `${Math.round(Math.random() * 30)}%` as PositionValue,
 }));
 
 const Platforms = () => {
-  const [width, height] = useContainerSize();
-
   return (
     <>
-      <Platform x={width * 0.3} y={height * 0.6} w={200} />
-      <Platform x={width * 0.7} y={height * 0.75} w={200} />
+      <Platform x="30%" y="60%" w={200} />
+      <Platform x="70%" y="75%" w={200} />
     </>
   );
 };
 
 const FallingBodies = () => {
-  const [width, height] = useContainerSize();
-
   return (
     <>
       {fallingBodies.map((b) => (
-        <FallingBody key={b.id} x={width * b.x} y={height * b.y} />
+        <FallingBody key={b.id} x={b.x} y={b.y} />
       ))}
     </>
   );

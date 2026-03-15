@@ -1,16 +1,14 @@
-import { useContainerSize, useBody } from "react-matters";
+import { useBody } from "react-matters";
 
 interface Props {
   className?: string;
 }
 
 const Text: React.FC<Props> = ({ className }) => {
-  const [width, height] = useContainerSize();
-
   const { style, ref, dragControls } = useBody<HTMLDivElement>({
     type: "rectangle",
-    x: width * 0.5,
-    y: height * 0.5,
+    x: "50%",
+    y: "50%",
     rounded: 8,
     draggable: true,
   });

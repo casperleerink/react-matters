@@ -3,16 +3,15 @@ import {
   Bounds,
   MouseConstraint,
   useBody,
-  useContainerSize,
+  type PositionValue,
 } from "react-matters";
 import NavBody from "../components/NavBody";
 
 const TitleBody = () => {
-  const [width, height] = useContainerSize();
   const { ref, style, dragControls } = useBody<HTMLDivElement>({
     type: "rectangle",
-    x: width * 0.5,
-    y: height * 0.3,
+    x: "50%",
+    y: "30%",
     draggable: true,
     rounded: 8,
   });
@@ -31,7 +30,7 @@ const TitleBody = () => {
   );
 };
 
-const DecorativeCircle: React.FC<{ x: number; y: number }> = ({ x, y }) => {
+const DecorativeCircle: React.FC<{ x: PositionValue; y: PositionValue }> = ({ x, y }) => {
   const { ref, style, dragControls } = useBody<HTMLDivElement>({
     type: "circle",
     x,
@@ -51,8 +50,8 @@ const DecorativeCircle: React.FC<{ x: number; y: number }> = ({ x, y }) => {
 
 const circles = Array.from({ length: 12 }, (_, i) => ({
   id: i,
-  x: Math.random(),
-  y: Math.random() * 0.5,
+  x: `${Math.round(Math.random() * 100)}%` as PositionValue,
+  y: `${Math.round(Math.random() * 50)}%` as PositionValue,
 }));
 
 const navLinks = [
@@ -64,8 +63,6 @@ const navLinks = [
 ];
 
 const NavLinks = () => {
-  const [width, height] = useContainerSize();
-
   return (
     <>
       {navLinks.map((link, i) => (
@@ -73,8 +70,8 @@ const NavLinks = () => {
           key={link.route}
           label={link.label}
           route={link.route}
-          x={width * (0.15 + (i * 0.7) / (navLinks.length - 1))}
-          y={height * 0.55}
+          x={`${Math.round(15 + (i * 70) / (navLinks.length - 1))}%`}
+          y="55%"
         />
       ))}
     </>
@@ -82,12 +79,10 @@ const NavLinks = () => {
 };
 
 const DecorativeCircles = () => {
-  const [width, height] = useContainerSize();
-
   return (
     <>
       {circles.map((c) => (
-        <DecorativeCircle key={c.id} x={width * c.x} y={height * c.y} />
+        <DecorativeCircle key={c.id} x={c.x} y={c.y} />
       ))}
     </>
   );

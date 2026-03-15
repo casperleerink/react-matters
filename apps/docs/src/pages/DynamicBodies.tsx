@@ -4,7 +4,7 @@ import {
   Bounds,
   MouseConstraint,
   useBody,
-  useContainerSize,
+  type PositionValue,
 } from "react-matters";
 import { useControls, button } from "leva";
 import Layout from "../components/Layout";
@@ -12,7 +12,7 @@ import Layout from "../components/Layout";
 interface BodyDef {
   id: number;
   type: "circle" | "rectangle";
-  x: number;
+  x: PositionValue;
   y: number;
 }
 
@@ -67,7 +67,7 @@ const DynamicBodies = () => {
       {
         id: nextId++,
         type,
-        x: 200 + Math.random() * 400,
+        x: `${Math.round(10 + Math.random() * 80)}%` as PositionValue,
         y: 60,
       },
     ]);

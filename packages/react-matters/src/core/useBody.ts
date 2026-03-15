@@ -2,16 +2,24 @@ import { type CSSProperties, useRef, type RefObject } from "react";
 import { Body } from "matter-js";
 import type { Element } from "./store";
 import { usePhysics } from "./PhysicsContext";
+import { useContainerSizeContext } from "./PhysicsContext";
 import { useSize } from "../utils/useSize";
 import { useIsomorphicLayoutEffect } from "../utils/useIsomorphicLayoutEffect";
 import { addElement, createBody, removeElement } from "../utils/element";
 import { useDrag } from "../utils/useDrag";
 import type { ReactDOMAttributes } from "@use-gesture/react/dist/declarations/src/types";
+import { type PositionValue, resolvePosition } from "../types/position";
 
 interface Props {
   type: "rectangle" | "circle";
-  x: number;
-  y: number;
+  /**
+   * Horizontal position — pixels or a percentage of container width (e.g. `"50%"`).
+   */
+  x: PositionValue;
+  /**
+   * Vertical position — pixels or a percentage of container height (e.g. `"25%"`).
+   */
+  y: PositionValue;
   rounded?: number;
   draggable?: boolean;
   // Mutable physics properties (updated via Body.set without recreating)
@@ -43,6 +51,38 @@ type Returns<T> = {
   dragControls: (...args: any[]) => ReactDOMAttributes;
 };
 
+/**
+ * Creates a physics body and binds it to a DOM element. The element's
+ * position is automatically synchronized with the simulation each frame.
+ *
+ * Returns a `ref` to attach to your element, a `style` object with the
+ * required positioning styles, the underlying `matterBody` for direct
+ * access, and `dragControls` to spread onto the element for drag support.
+ *
+ * The body is recreated when its geometry (`type`, measured size, `rounded`)
+ * changes, and physics properties are patched in-place otherwise.
+ *
+ * @example
+ * ```tsx
+ * const Box = () => {
+ *   const { ref, style, dragControls } = useBody<HTMLDivElement>({
+ *     type: "rectangle",
+ *     x: "50%",   // center horizontally
+ *     y: 0,       // pixels still work
+ *     restitution: 0.6,
+ *     draggable: true,
+ *   });
+ *
+ *   return (
+ *     <div
+ *       ref={ref}
+ *       style={{ ...style, width: 80, height: 80, background: "tomato" }}
+ *       {...dragControls()}
+ *     />
+ *   );
+ * };
+ * ```
+ */
 export const useBody = <T extends HTMLElement>({
   type,
   x,
@@ -63,6 +103,10 @@ export const useBody = <T extends HTMLElement>({
   const ref = useRef<T>(null);
   const [width, height] = useSize(ref);
   const { engine, elements } = usePhysics();
+  const { width: containerW, height: containerH } = useContainerSizeContext();
+
+  const resolvedX = resolvePosition(x, containerW);
+  const resolvedY = resolvePosition(y, containerH);
 
   const bodyOptions: Record<string, unknown> = {
     chamfer: { radius: rounded },
@@ -85,7 +129,7 @@ export const useBody = <T extends HTMLElement>({
       width,
       height,
       options: bodyOptions,
-      position: { x, y },
+      position: { x: resolvedX, y: resolvedY },
       ref,
     }),
   );
@@ -97,7 +141,7 @@ export const useBody = <T extends HTMLElement>({
   useIsomorphicLayoutEffect(() => {
     const currentBody = element.current.body;
     const position = isStatic
-      ? { x, y }
+      ? { x: resolvedX, y: resolvedY }
       : { x: currentBody.position.x, y: currentBody.position.y };
 
     const newElement = createBody({
@@ -117,7 +161,7 @@ export const useBody = <T extends HTMLElement>({
     return () => {
       removeElement({ element: element.current, elements, engine });
     };
-  }, [type, width, height, rounded]);
+  }, [type, width, height, rounded, resolvedX, resolvedY]);
 
   // Update physics properties on existing body without recreating
   useIsomorphicLayoutEffect(() => {

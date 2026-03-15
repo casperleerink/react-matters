@@ -4,7 +4,7 @@ import {
   Bounds,
   MouseConstraint,
   useBody,
-  useContainerSize,
+  type PositionValue,
 } from "react-matters";
 import { useControls, button } from "leva";
 import Layout from "../components/Layout";
@@ -27,7 +27,7 @@ const GROUPS = [
 
 interface BodyDef {
   id: number;
-  x: number;
+  x: PositionValue;
   y: number;
   category: number;
   colorClass: string;
@@ -80,7 +80,7 @@ const CollisionFilters = () => {
       ...prev,
       {
         id: nextId++,
-        x: 200 + Math.random() * 400,
+        x: `${Math.round(10 + Math.random() * 80)}%` as PositionValue,
         y: 50,
         category: group.category,
         colorClass: group.color,

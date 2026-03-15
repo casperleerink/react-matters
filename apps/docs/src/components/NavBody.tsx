@@ -1,10 +1,10 @@
-import { useBody } from "react-matters";
+import { useBody, type PositionValue } from "react-matters";
 
 interface Props {
   label: string;
   route: string;
-  x: number;
-  y: number;
+  x: PositionValue;
+  y: PositionValue;
 }
 
 const NavBody: React.FC<Props> = ({ label, route, x, y }) => {

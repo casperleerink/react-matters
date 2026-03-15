@@ -5,26 +5,25 @@ import {
   Bounds,
   MouseConstraint,
   useBody,
-  useContainerSize,
   useEngine,
+  type PositionValue,
 } from "react-matters";
 import { useControls, button } from "leva";
 import Layout from "../components/Layout";
 
 interface BodyDef {
   id: number;
-  x: number;
+  x: PositionValue;
   y: number;
 }
 
 let nextId = 0;
 
 const SensorZone: React.FC<{ overlapCount: number }> = ({ overlapCount }) => {
-  const [width, height] = useContainerSize();
   const { ref, style } = useBody<HTMLDivElement>({
     type: "rectangle",
-    x: width * 0.5,
-    y: height * 0.55,
+    x: "50%",
+    y: "55%",
     isStatic: true,
     isSensor: true,
   });
@@ -135,7 +134,7 @@ const Sensors = () => {
       ...prev,
       {
         id: nextId++,
-        x: 150 + Math.random() * 500,
+        x: `${Math.round(Math.random() * 100)}%` as PositionValue,
         y: 50,
       },
     ]);

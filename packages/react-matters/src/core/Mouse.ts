@@ -6,6 +6,23 @@ import {
   MouseConstraint as MouseConstraintMatter,
 } from "matter-js";
 
+/**
+ * Enables mouse and touch interaction with physics bodies inside the
+ * {@link Container}. When mounted, users can click/tap and drag any
+ * non-static body.
+ *
+ * Renders nothing to the DOM. Only one instance should be mounted per
+ * container.
+ *
+ * @example
+ * ```tsx
+ * <Container style={{ width: "100%", height: 500 }}>
+ *   <MouseConstraint />
+ *   <Bounds />
+ *   <Ball />
+ * </Container>
+ * ```
+ */
 export const MouseConstraint = () => {
   const { engine, containerRef } = usePhysics();
   useEffect(() => {

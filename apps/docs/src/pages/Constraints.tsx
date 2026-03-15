@@ -6,6 +6,7 @@ import {
   useBody,
   useConstraint,
   useContainerSize,
+  type PositionValue,
 } from "react-matters";
 import type { Body } from "matter-js";
 import { useControls } from "leva";
@@ -53,25 +54,25 @@ const ConstraintLine: React.FC<{
 // --- 1. Pendulum ---
 const Pendulum = () => {
   const [width, height] = useContainerSize();
-  const anchorPoint = { x: width * 0.2, y: height * 0.15 };
+  const anchorPixels = { x: width * 0.2, y: height * 0.15 };
 
   const { ref, style, dragControls, matterBody } = useBody<HTMLDivElement>({
     type: "circle",
-    x: width * 0.3,
-    y: height * 0.35,
+    x: "30%",
+    y: "35%",
     draggable: true,
   });
 
   useConstraint({
     bodyA: matterBody,
-    pointB: anchorPoint,
+    pointB: { x: "20%", y: "15%" },
     stiffness: 1,
   });
 
   return (
     <>
-      <ConstraintLine bodyA={matterBody} pointB={anchorPoint} />
-      <circle cx={anchorPoint.x} cy={anchorPoint.y} r={4} fill="#9ca3af" />
+      <ConstraintLine bodyA={matterBody} pointB={anchorPixels} />
+      <circle cx={anchorPixels.x} cy={anchorPixels.y} r={4} fill="#9ca3af" />
       <foreignObject
         x={0}
         y={0}
@@ -175,8 +176,6 @@ const Chain = () => {
 
 // --- 3. Spring ---
 const Spring: React.FC<{ stiffness: number }> = ({ stiffness }) => {
-  const [width, height] = useContainerSize();
-
   const {
     ref: refA,
     style: styleA,
@@ -184,8 +183,8 @@ const Spring: React.FC<{ stiffness: number }> = ({ stiffness }) => {
     matterBody: bodyA,
   } = useBody<HTMLDivElement>({
     type: "circle",
-    x: width * 0.75,
-    y: height * 0.2,
+    x: "75%",
+    y: "20%",
     draggable: true,
   });
 
@@ -196,8 +195,8 @@ const Spring: React.FC<{ stiffness: number }> = ({ stiffness }) => {
     matterBody: bodyB,
   } = useBody<HTMLDivElement>({
     type: "circle",
-    x: width * 0.85,
-    y: height * 0.45,
+    x: "85%",
+    y: "45%",
     draggable: true,
   });
 

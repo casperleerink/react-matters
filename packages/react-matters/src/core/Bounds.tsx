@@ -45,6 +45,21 @@ const getRects = (width: number, height: number) => {
   return rects;
 };
 
+/**
+ * Creates four invisible static walls (top, bottom, left, right) around the
+ * edges of the {@link Container}, preventing bodies from falling out of view.
+ *
+ * The walls automatically resize when the container dimensions change.
+ * Renders nothing to the DOM.
+ *
+ * @example
+ * ```tsx
+ * <Container style={{ width: "100%", height: 500 }}>
+ *   <Bounds restitution={0.8} friction={0.1} />
+ *   <Ball />
+ * </Container>
+ * ```
+ */
 export const Bounds = ({ restitution = 0.0, friction = 0.5 }: Props) => {
   const { width, height } = useContainerSizeContext();
   const { engine, elements } = usePhysics();
