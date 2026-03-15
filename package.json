@@ -5,7 +5,7 @@
     "dev": "turbo run dev --continue",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
-    "publish": "cd packages/react-matters && pnpm publish",
+    "publish": "cd packages/react-matters && pnpm publish --access public",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",

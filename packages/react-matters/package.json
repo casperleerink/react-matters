@@ -9,8 +9,7 @@
   "scripts": {
     "build": "tsup index.ts --format cjs,esm --dts",
     "dev": "tsup index.ts --format cjs,esm --dts --watch",
-    "lint": "tsc",
-    "publish": "npm publish --access=public ./"
+    "lint": "tsc"
   },
   "devDependencies": {
     "@types/matter-js": "^0.20.0",
