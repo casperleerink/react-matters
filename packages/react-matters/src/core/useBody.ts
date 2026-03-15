@@ -64,19 +64,19 @@ export const useBody = <T extends HTMLElement>({
   const [elements] = useStore((state) => state.elements);
   const [engine] = useStore((state) => state.engine);
 
-  const bodyOptions = {
-    isStatic,
-    isSensor,
-    friction,
-    frictionStatic,
-    frictionAir,
-    restitution,
-    density,
-    slop,
-    timeScale,
-    collisionFilter,
+  const bodyOptions: Record<string, unknown> = {
     chamfer: { radius: rounded },
   };
+  if (isStatic !== undefined) bodyOptions.isStatic = isStatic;
+  if (isSensor !== undefined) bodyOptions.isSensor = isSensor;
+  if (friction !== undefined) bodyOptions.friction = friction;
+  if (frictionStatic !== undefined) bodyOptions.frictionStatic = frictionStatic;
+  if (frictionAir !== undefined) bodyOptions.frictionAir = frictionAir;
+  if (restitution !== undefined) bodyOptions.restitution = restitution;
+  if (density !== undefined) bodyOptions.density = density;
+  if (slop !== undefined) bodyOptions.slop = slop;
+  if (timeScale !== undefined) bodyOptions.timeScale = timeScale;
+  if (collisionFilter !== undefined) bodyOptions.collisionFilter = collisionFilter;
 
   const element = useRef<Element>(
     createBody({
