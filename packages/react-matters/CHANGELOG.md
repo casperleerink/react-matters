@@ -1,5 +1,19 @@
 # react-matters
 
+## 0.3.0
+
+### Minor Changes
+
+- ### Features
+  - Support percentage-based positioning in `useBody` and `useConstraint` — positions can now be specified as percentages (e.g. `"50%"`) relative to the physics container dimensions
+
+  ### Fixes
+  - Guard `ResizeObserver.observe` against null ref to prevent errors on rapid mount/unmount cycles
+  - Fix container sizing issues
+
+  ### Improvements
+  - Replace single store with split context architecture for better performance and separation of concerns
+
 ## 0.2.3
 
 ### Patch Changes
